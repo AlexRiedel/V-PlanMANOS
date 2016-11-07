@@ -1,0 +1,458 @@
+package de.alex_riedel.v_planmanos;
+
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+
+public class MyFragment extends Fragment {
+
+
+    //Layoutkompnenten:
+    private LinearLayout linearLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout1;
+
+
+    private TextView textOben1;
+    private TextView textOben2;
+    private TextView textUnten1;
+    private TextView textUnten2;
+
+    private CardView cardOben;
+    private CardView cardUnten;
+
+    private Button button;
+
+    public CardView[] cardViews = new CardView[50];
+    public TextView[] textViews = new TextView[50];
+
+
+
+    //Andere Variablen:
+    private int anzahlCards = 0;
+    private MainActivity mainActivity;
+    private Vplan vplan;
+
+    private String name ="";
+
+//Oeffentliche Methoden:
+    public MyFragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mainActivity = (MainActivity) getActivity();
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View layout = inflater.inflate(R.layout.fragment_my, container, false);
+
+        linearLayout = (LinearLayout) layout.findViewById(R.id.linearLayout);
+        mSwipeRefreshLayout1 =(SwipeRefreshLayout) layout.findViewById(R.id.swipeRefreshLayout1);
+
+
+        textOben1 = (TextView) layout.findViewById(R.id.textOben1);
+        textOben2 = (TextView) layout.findViewById(R.id.textOben2);
+        textUnten1 = (TextView) layout.findViewById(R.id.textUnten1);
+        textUnten2 = (TextView) layout.findViewById(R.id.textUnten2);
+
+        cardOben = (CardView) layout.findViewById(R.id.cardOben);
+        cardUnten = (CardView) layout.findViewById(R.id.cardUnten);
+
+        button = (Button) layout.findViewById(R.id.button);
+
+
+        mSwipeRefreshLayout1.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshItems();
+            }
+        });
+
+        return layout;
+    }
+
+    public void setName(String name){
+        this.name=name;
+    }
+
+    public void setVplan(Vplan vplan)throws NullPointerException{
+        this.vplan = vplan;
+        try {
+            //Vplan anzeigen:
+            if (vplan != null) {              //Nur, wenn nicht null
+                if (!vplan.isProblem()) {
+                    vplanZeigen();          //Anzeigen, wenn kein Problem
+                    if (name.equals("fragment1")) {      //evtl. zum linken Fragment swipen, falls keine relavanten Daten zur verfuegung stehen
+                        if (nextStunde() > vplan.getAenStunde(vplan.getAenAnzahl()) || nextStunde() == 0) {
+                            this.mainActivity.swipeToFrag2();
+                        }
+                    } else if (vplan.isKeineAenderung() && nextStunde() >= 5) {
+                        this.mainActivity.swipeToFrag2();
+                    }
+                } else {//Wenn Problem:
+                    setAlternativtext(vplan.getFehler(),true);
+                    if (name.equals("fragment1")) {      //evtl. zum linken Fragment swipen, falls keine relavanten Daten zur verfuegung stehen
+                        this.mainActivity.swipeToFrag2();
+                    }
+                }
+            } else {//Wenn kein Vplan:
+                if (name.equals("fragment1")) {
+                    this.mainActivity.swipeToFrag2();   //zum linken Fragment swipen, falls rechtes Fragment
+                }
+
+            }
+        }catch (NullPointerException enull){
+            enull.printStackTrace();
+            throw enull;
+        }
+
+
+    }
+
+    public void setAlternativtext(String text, boolean buttonVisible) throws NullPointerException{
+        //Setzt einen alternativen Text, falls kein Vplan verfuegbar ist
+        try {
+            removeCardViews();  //eventuelle CardViews enstfernen, damit Platz fuer den alternativen Text ist
+
+            cardOben.setVisibility(View.VISIBLE);       //Benoetigte Elemente sichtbar machen
+            textOben1.setVisibility(View.VISIBLE);
+            textOben1.setText(text);
+
+            if (buttonVisible){
+                button.setVisibility(View.VISIBLE);
+                textOben2.setVisibility(View.VISIBLE);
+                aktualisieren();
+
+            }else {
+                button.setVisibility(View.GONE);
+                textOben2.setVisibility(View.GONE);
+            }
+
+
+
+
+        }catch (NullPointerException enull){
+            enull.printStackTrace();
+            throw enull;
+        }
+
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public String getWochentag(){
+        try {
+            return vplan.getWochentag();
+        }catch (NullPointerException e){
+            return "Morgen";
+        }
+    }
+
+    public String getShare(){
+        if (vplan!=null){
+            return vplan.getShare();
+        }else {
+            return "Nichts zum teilen!\nAber ich versuch's trotdem mal";
+        }
+    }
+
+    public void aktualisieren() {
+        //Um die Zeit des letzten Planherunterladens zu aktualisieren
+        try {
+
+            SharedPreferences pref = mainActivity.getApplicationContext().getSharedPreferences("setup", Context.MODE_PRIVATE);  //Speichervariable erzeugen
+            Calendar calendar = Calendar.getInstance();
+            String uhrzeit = pref.getString("uhrzeit", "");
+
+
+            if (!uhrzeit.equals("")) {
+
+                String letzteAktualisierung;
+
+                int hJahrestag = calendar.get(Calendar.DAY_OF_YEAR);
+                int hJahr = calendar.get(Calendar.YEAR);
+
+                int gTag = pref.getInt("tag", calendar.get(Calendar.DAY_OF_MONTH));
+                int gJahrestag = pref.getInt("jahrestag", hJahrestag);
+                int gMonat = pref.getInt("monat", calendar.get(Calendar.MONTH));
+                int gJahr = pref.getInt("jahr", hJahr);
+
+
+
+                if ((gJahr - hJahr) == -1) {    //letztes Jahr
+                    GregorianCalendar cal = new GregorianCalendar();
+                    if (cal.isLeapYear(gJahr)) {  //wenn Schaltjahr
+                        gJahrestag = gJahrestag - 366;
+                    } else {
+                        gJahrestag = gJahrestag - 365;
+                    }
+                }
+                if (gJahrestag == hJahrestag) {   //heute
+                    letzteAktualisierung = "Letzte Aktualisierung: " + uhrzeit;
+                } else if ((gJahrestag - hJahrestag) == -1) {     //gestern
+                    letzteAktualisierung = "Letzte Aktualisierung: gestern, " + uhrzeit;
+                } else if ((gJahrestag - hJahrestag) == -2) {
+                    letzteAktualisierung = "Letzte Aktualisierung: vorgestern, " + uhrzeit;
+                } else {
+                    letzteAktualisierung = "Letzte Aktualiserung: " + (gTag + 1) + "." + (gMonat + 1) + "." + gJahr + ", " + uhrzeit;
+                }
+
+
+
+                textOben2.setText(letzteAktualisierung);
+            }else {
+                textOben2.setVisibility(View.GONE);
+            }
+        }catch (NullPointerException enull){
+            enull.printStackTrace();
+            throw enull;
+        }
+
+    }
+
+    public void onItemsLoadComplete() {
+        mSwipeRefreshLayout1.setRefreshing(false);  //Ladeanimation stoppen
+    }
+
+    public void manRefrech(){
+        mSwipeRefreshLayout1.post(new Runnable() {
+            @Override public void run() {
+                mSwipeRefreshLayout1.setRefreshing(true);   //Ladeanimation manuel starten
+            }
+        });
+
+    }
+
+
+//private Methoden:
+    private void vplanZeigen()throws NullPointerException{
+        //Vertretungsplan darstellen:
+        try {
+            cardOben.setVisibility(View.GONE);      //nicht benoetigte Elemente unsichtbar machen
+            textOben1.setVisibility(View.GONE);
+            textOben2.setVisibility(View.GONE);
+            button.setVisibility(View.GONE);
+
+
+
+
+            vplan.aenderungfiltern(getContext());
+            if (vplan.isKeineAenderung()){
+                setAlternativtext("Keine Änderung",false);
+            }else {
+                String[] aenderung=vplan.getAenderung(getContext());
+                int next = nextStunde();    //Was die naechste Sunde ist
+                boolean aktiv;
+                boolean letzte;
+
+                removeCardViews();  //Vorherige Cards entfernen, da diese sonst bestehen bleiben
+
+
+                for (int i=1;i<=vplan.getAenAnzahl();i++){
+                    aktiv = vplan.getAenStunde(i) == next;  //Karten werden markiert, wenn sie die naechste Stunde betrefen, also "aktiv" sind
+
+                    letzte = i==vplan.getAenAnzahl();       //Bei der letzten Karte gibt es andere Abstaende
+
+                    addCardView(aenderung[i],aktiv,letzte); //Kate hinzufuegen
+    //                addCardView(aenderung[i],true,letzte);
+
+                }
+            }
+
+            if (vplan.isZusInfoBool()){ //Zusaetzliche Informationen anzeigen
+                setZusInfo(vplan.getZusInfo());
+            }else {                     //Sonst die betreffenden Elemente unsichtbar machen
+                cardUnten.setVisibility(View.GONE);
+                textUnten2.setVisibility(View.GONE);
+                textUnten1.setVisibility(View.GONE);
+
+            }
+
+        }catch (NullPointerException enull){
+            enull.printStackTrace();
+            String a="seslkdnjse";
+
+            Log.e("MyFragment","vplanZeigen NullPointerException");
+            throw enull;
+        }
+
+//        setZusInfo("Der Unterricht findet laut Sommerplan (Kurzplan)"); //TEST
+
+
+
+    }
+
+    private void setZusInfo(String zusInfo)throws NullPointerException{
+        try {
+            cardUnten.setVisibility(View.VISIBLE);      //Benoetigte Elemente sichtbar machen
+            textUnten2.setVisibility(View.VISIBLE);
+            textUnten1.setVisibility(View.VISIBLE);
+            textUnten2.setText(zusInfo);                //Und Text setzten
+        }catch (NullPointerException enull){
+            enull.printStackTrace();
+            throw enull;
+        }
+    }
+
+    private void addCardView(String text, boolean aktiv, boolean letzte){
+        int cardPadding = this.getResources().getDimensionPixelSize(R.dimen.cardPadding);
+        int margLeft = this.getResources().getDimensionPixelSize(R.dimen.margLeft);
+        int margTop = this.getResources().getDimensionPixelSize(R.dimen.margTop);
+        int margRight = this.getResources().getDimensionPixelSize(R.dimen.margRight);
+        int margBottom = this.getResources().getDimensionPixelSize(R.dimen.margBottom);
+
+        if (letzte) margBottom = this.getResources().getDimensionPixelSize(R.dimen.margBottomLast);             //Bei erster und lezter Karte andere Margins verwenden
+        if (anzahlCards==0) margTop = this.getResources().getDimensionPixelSize(R.dimen.margTopFirst);
+
+        cardViews[anzahlCards] = new CardView(this.getContext());   //neue Karte erzeugen
+
+        LinearLayout.LayoutParams linLayParmsCard = new LinearLayout.LayoutParams(  //neue Layoutparameter erzeugen
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        linLayParmsCard.setMargins(margLeft, margTop, margRight, margBottom);
+        linLayParmsCard.setMarginStart(margLeft);
+        linLayParmsCard.setMarginEnd(margRight);
+        linLayParmsCard.gravity = Gravity.TOP;
+
+        cardViews[anzahlCards].setLayoutParams(linLayParmsCard);    //Layoutparameter in Kart einsetzen
+
+        cardViews[anzahlCards].setContentPadding(cardPadding,cardPadding,cardPadding,cardPadding);
+
+        if (aktiv){     //Aktive Karten haben eine andere Farbe und Hoehe
+            cardViews[anzahlCards].setCardBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.colorAccent));
+
+
+            cardViews[anzahlCards].setCardElevation(this.getResources().getDimension(R.dimen.elevCardHigh));
+        }else {
+            cardViews[anzahlCards].setCardElevation(this.getResources().getDimension(R.dimen.elevCardNorm));
+        }
+
+        cardViews[anzahlCards].setRadius(this.getResources().getDimension(R.dimen.radiusCard));
+
+        //Layout fuer den Text
+        LinearLayout.LayoutParams linLayParmsText = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT,1f);
+
+
+        textViews[anzahlCards] = new TextView(this.getContext());   //Textfeld erzeugen
+        textViews[anzahlCards].setLayoutParams(linLayParmsText);
+        textViews[anzahlCards].setText(text);
+
+
+        cardViews[anzahlCards].addView(textViews[anzahlCards]);     //Textfeld der Karte hinzufuegen
+        linearLayout.addView(cardViews[anzahlCards]);               //Karte dem Layout hinzufuegen
+
+        anzahlCards++;  //Weiterzaehlen
+    }
+
+    private void removeCardViews()throws NullPointerException{
+        //Entfernen der Karten, die den Vertretungsplan darstellen
+        try {
+            for (int i=0;i<=anzahlCards;i++){
+                linearLayout.removeView(cardViews[i]);
+            }
+        }catch (NullPointerException enull){
+            enull.printStackTrace();
+            throw enull;
+        }
+
+        anzahlCards=0;  //Anzahl wieder auf Null setzten
+
+    }
+
+    private void refreshItems() {
+        mainActivity.herunterladen();
+    }
+
+    private int nextStunde () {
+        //Liefert, welche Stunde gerade ist, oder als naechstes gehalten wird; evtl 0, falls der Unterricht beendet ist, oder noch nicht begonnen hat
+
+        SharedPreferences einstellungen = PreferenceManager.getDefaultSharedPreferences( mainActivity.getApplicationContext());
+        int minute;                         //Aktuelle Minute
+        int stunde;                         //Aktelle Stunde (Uhrzeit)
+        int next = 0;                       //Rueckgabevariable
+
+        boolean abbruch = false;            //Abbruchvariable, zum  Abbrechen von Schleifen
+
+        int[] endeStund = {0, 8, 8,10,10,11,42,14,14,15,16,17,18};    //Wann zB die 1. Stunde endet, in Uhrzeitstuden (Um 12 Minuten nach vorne gezogen!)
+        int[] endeMinut = {0, 3,58, 3,58,53,42, 3,53,43,33,23,13};    //Wann zB die 1. Stunde endet, in Uhrzeitminuten
+
+        if (einstellungen.getBoolean("anderePause",false)) {     //Die Mittagspause der 5. und 6. Klassen ist verschoben!
+            endeStund[6] = 13;
+            endeMinut[6] = 20;
+        } else {
+            endeStund[6] = 12;
+            endeMinut[6] = 48;
+        }
+
+
+
+
+        Calendar time=Calendar.getInstance();       //Kalender erzeugen
+        minute=time.get(Calendar.MINUTE);           //Minute auslesen
+        stunde=time.get(Calendar.HOUR_OF_DAY);      //Stunde auslesen
+
+        //Herausbekommen, welche die naechste Stunde ist
+        while (!abbruch) {
+            next++;
+            try {
+                if (stunde == endeStund[next]) {
+                    if (minute <= endeMinut[next]) {
+                        abbruch = true;
+                    }
+                }
+                if (stunde < endeStund[next]) {
+                    abbruch = true;
+                }
+            } catch (IndexOutOfBoundsException ebound) {
+                next = 0;
+                abbruch = true;
+            }
+        }
+
+        //Bedingungen, unter dene es keine naechste Stunde gibt:
+
+        switch (time.get(Calendar.DAY_OF_WEEK)) {
+            case 1://Sonntag
+                next=0;
+                break;
+            case 7://Samstag
+                next=0;
+                break;
+        }
+
+        return next;
+    }
+
+
+
+
+
+
+}

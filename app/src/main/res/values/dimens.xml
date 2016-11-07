@@ -1,0 +1,24 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="tab_max_width">264dp</dimen>
+    <dimen name="tab_padding_bottom">16dp</dimen>
+    <dimen name="tab_label">14sp</dimen>
+    <dimen name="custom_tab_layout_height">72dp</dimen>
+
+    <dimen name="cardPadding">4dp</dimen>
+
+    <dimen name="margLeft">10dp</dimen>
+    <dimen name="margRight">10dp</dimen>
+    <dimen name="margTop">5dp</dimen>
+    <dimen name="margBottom">0dp</dimen>
+
+    <dimen name="margBottomLast">10dp</dimen>
+    <dimen name="margTopFirst">10dp</dimen>
+
+    <dimen name="elevCardHigh">10dp</dimen>
+    <dimen name="elevCardNorm">2dp</dimen>
+    <dimen name="radiusCard">4dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>

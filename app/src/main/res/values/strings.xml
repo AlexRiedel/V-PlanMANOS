@@ -1,0 +1,142 @@
+<resources>
+    <string name="app_name">V-Plan MANOS</string>
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="one">Fragment 1</string>
+    <string name="two">Fragment 2</string>
+    <string name="title_activity_settings_">Einstellungen</string>
+
+    <string-array name="Klassen">
+        <item>5a</item>
+        <item>5b</item>
+        <item>5c</item>
+        <item>6a</item>
+        <item>6b</item>
+        <item>6c</item>
+        <item>7a</item>
+        <item>7b</item>
+        <item>7c</item>
+        <item>8a</item>
+        <item>8b</item>
+        <item>8c</item>
+        <item>9a</item>
+        <item>9b</item>
+        <item>9c</item>
+        <item>10a</item>
+        <item>10b</item>
+        <item>10c</item>
+        <item>JG11</item>
+        <item>JG12</item>
+    </string-array>
+
+    <string-array name="ast">
+        <item>ast1</item>
+        <item>kein Astronomie</item>
+    </string-array>
+
+    <string-array name="bio">
+        <item>BIO1</item>
+        <item>BIO2</item>
+        <item>bio1</item>
+        <item>bio2</item>
+    </string-array>
+    
+    <string-array name="ch">
+        <item>CH1</item>
+        <item>CH2</item>
+        <item>ch1</item>
+        <item>ch2</item>
+    </string-array>
+
+    <string-array name="de">
+        <item>de1</item>
+        <item>de2</item>
+        <item>de3</item>
+    </string-array>
+
+    <string-array name="en">
+        <item>EN1</item>
+        <item>EN2</item>
+        <item>en1</item>
+        <item>en2</item>
+    </string-array>
+
+    <string-array name="eth">
+        <item>eth1</item>
+        <item>eth2</item>
+    </string-array>
+
+    <string-array name="fr">
+        <item>fr21</item>
+        <item>fr22</item>
+        <item>kein Französich</item>
+    </string-array>
+
+    <string-array name="geo">
+        <item>geo1</item>
+        <item>geo2</item>
+        <item>kein Geografie</item>
+    </string-array>
+
+    <string-array name="grw">
+        <item>grw1</item>
+        <item>kein GRW</item>
+    </string-array>
+
+    <string-array name="ge">
+        <item>ge1</item>
+        <item>ge2</item>
+        <item>ge3</item>
+    </string-array>
+
+    <string-array name="inf">
+        <item>inf1</item>
+        <item>kein Informatik</item>
+    </string-array>
+
+    <string-array name="ku">
+        <item>ku1</item>
+        <item>kein Kunst</item>
+    </string-array>
+
+    <string-array name="la">
+        <item>la21</item>
+        <item>kein Latein</item>
+    </string-array>
+
+    <string-array name="ma">
+        <item>MA1</item>
+        <item>MA2</item>
+        <item>MA3</item>
+        <item>MA4</item>
+    </string-array>
+
+    <string-array name="mu">
+        <item>mu1</item>
+        <item>mu2</item>
+        <item>kein Musik</item>
+    </string-array>
+
+    <string-array name="ph">
+        <item>PH1</item>
+        <item>PH2</item>
+        <item>PH3</item>
+        <item>ph1</item>
+        <item>ph1</item>
+    </string-array>
+
+    <string-array name="spo">
+        <item>spo1</item>
+        <item>spo2</item>
+        <item>spo3</item>
+    </string-array>
+
+    <array name="verstanden">
+        <item>Ok, Verstanden</item>
+    </array>
+
+
+
+
+</resources>
