@@ -321,11 +321,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }catch (NullPointerException enull){
                     enull.printStackTrace();
-                    if (zaehler<10) {
+                    if (zaehler<2) {
                         setVplan(fragment, vplan, text, zaehler + 1);
-                    }else{          //nach zehn Versuchen Fehler anzeigen:
-                        Toast toast = Toast.makeText(getApplicationContext(), "Ein Fehler ist aufgetreten. Bitte App neustarten!", Toast.LENGTH_LONG);
-                        toast.show();
+                    }else{          //nach zwei Versuchen Neustart der App:
+                        Intent i = getBaseContext().getPackageManager()
+                                .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(i);
                     }
                 }
             }
