@@ -162,6 +162,10 @@ public class MyFragment extends Fragment {
 
     }
 
+    public Vplan getVplan(){
+        return vplan;
+    }
+
     public String getName(){
         return name;
     }
@@ -438,16 +442,24 @@ public class MyFragment extends Fragment {
 
         //Bedingungen, unter dene es keine naechste Stunde gibt:
 
-        switch (time.get(Calendar.DAY_OF_WEEK)) {
-            case 1://Sonntag
-                next=0;
-                break;
-            case 7://Samstag
-                next=0;
-                break;
+        Calendar heute = Calendar.getInstance();    //Heutiges Datum
+        Calendar date = vplan.getCalendar();
+
+        if (vergleiche(heute,date)!=0){ //Wenn der Plan nicht von heute ist
+            next = 0;
         }
 
         return next;
+    }
+
+    private int vergleiche(Calendar c1, Calendar c2){
+        int unterschied;
+        if (c1.get(Calendar.YEAR)==c2.get(Calendar.YEAR)){
+            unterschied=c1.get(Calendar.DAY_OF_YEAR)-c2.get(Calendar.DAY_OF_YEAR);
+        }else {
+            unterschied=c1.get(Calendar.YEAR)-c2.get(Calendar.YEAR);
+        }
+        return unterschied;
     }
 
 

@@ -157,6 +157,8 @@ public class MainActivity extends AppCompatActivity {
             setVplan(fragment2,vplan1,null,0);
         }else if (vergleiche(heute,date2) < 0){
             setVplan(fragment2,vplan2,null,0);
+        }else if(fragment2.getVplan()!=null){   //Wenn ein Plan gesetzt ist, diesen loeschen:
+            setVplan(fragment2,null,"kein Vertretungsplan verfügbar",0);
         }
 
 
@@ -204,8 +206,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void buttonRefrech (View v){
         //Methode, die der Butten aufruft
-        fragment1.manRefrech();
-        fragment2.manRefrech();
+        if (isOnline()) {
+            fragment1.manRefrech();
+            fragment2.manRefrech();
+        }
         herunterladen();
     }
 
