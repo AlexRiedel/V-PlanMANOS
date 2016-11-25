@@ -584,6 +584,14 @@ class Vplan {
     private void auswerten(String[]alles){
 //        alles[] wird ausgewertet: Variablen datum, abLehrer, aenLeher, aenKlassen, klasse[], stunde[], fach[], lehrer[], raum[] und info[] werden ausgelesen.
 
+        //Setup des Indexes [0] mit Werten, damit diese ungleich null sind
+        klasse[0] = "13b";
+        stunde[0] = "0";
+        fach[0] = "Bei";
+        lehrer[0] = "Kei";
+        raum[0] = "042";
+        info[0] = "Beispielstunde";
+
 
         aenAnzahl =0;
 

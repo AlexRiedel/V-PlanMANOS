@@ -430,28 +430,26 @@ public class MainActivity extends AppCompatActivity {
 
                 //Auswhal der beiden anzuzeigenden Plaene:
 
-                if (vergleiche(date1,date3)!=0&&vergleiche(date2,date3)!=0) {       //Wenn Plan3 nicht das selbe Datum hat wie Plan1 oder Plan3
-                    if (vergleiche(heute, date3) < 0) {                            //Wenn Plan3 von (ueber-)morgen:
-                        if (vergleiche(date1, date2) < 0) {                       //...diesen als Plan1 bzw. Plan2 (jenachdem, welcher der beiden aelter ist) speichern und anzeigen
-                            vplan1 = new Vplan("vplan1", alles, MainActivity.this.getApplicationContext(),true);
-                            setVplan(fragment2,vplan1,null,0);
-                        } else {
-                            vplan2 = new Vplan("vplan2", alles, MainActivity.this.getApplicationContext(),true);
-                            setVplan(fragment2,vplan2,null,0);
-                        }
-                    } else if (vergleiche(heute, date3) == 0) {                                     //Wenn Plan3 von heute
-                        setVplan(fragment2,null,"Vertretungsplan noch nicht verfügbar",0);
-                        if (vergleiche(date1, date2) < 0) {                //...diesen als Plan1 bzw. Plan2 (jenachdem, welcher der beiden aelter ist) speichern und anzeigen
-                            vplan1 = new Vplan("vplan1", alles, MainActivity.this.getApplicationContext(),true);
-                            setVplan(fragment1,vplan1,null,0);
-                        } else {
-                            vplan2 = new Vplan("vplan2", alles, MainActivity.this.getApplicationContext(),true);
-                            setVplan(fragment1,vplan2,null,0);
-                        }
-
+                if (vergleiche(heute, date3) < 0) {                            //Wenn Plan3 von (ueber-)morgen:
+                    if (vergleiche(date1, date2) < 0) {                       //...diesen als Plan1 bzw. Plan2 (jenachdem, welcher der beiden aelter ist) speichern und anzeigen
+                        vplan1 = new Vplan("vplan1", alles, MainActivity.this.getApplicationContext(),true);
+                        setVplan(fragment2,vplan1,null,0);
                     } else {
-                        setVplan(fragment2,null,"Vertretungsplan noch nicht verfügbar",0);
+                        vplan2 = new Vplan("vplan2", alles, MainActivity.this.getApplicationContext(),true);
+                        setVplan(fragment2,vplan2,null,0);
                     }
+                } else if (vergleiche(heute, date3) == 0) {                                     //Wenn Plan3 von heute
+                    setVplan(fragment2,null,"Vertretungsplan noch nicht verfügbar",0);
+                    if (vergleiche(date1, date2) < 0) {                //...diesen als Plan1 bzw. Plan2 (jenachdem, welcher der beiden aelter ist) speichern und anzeigen
+                        vplan1 = new Vplan("vplan1", alles, MainActivity.this.getApplicationContext(),true);
+                        setVplan(fragment1,vplan1,null,0);
+                    } else {
+                        vplan2 = new Vplan("vplan2", alles, MainActivity.this.getApplicationContext(),true);
+                        setVplan(fragment1,vplan2,null,0);
+                    }
+
+                } else {
+                    setVplan(fragment2,null,"Vertretungsplan noch nicht verfügbar",0);
                 }
 
 

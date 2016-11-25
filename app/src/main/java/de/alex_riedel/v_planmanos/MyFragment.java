@@ -224,7 +224,7 @@ public class MyFragment extends Fragment {
                 } else if ((gJahrestag - hJahrestag) == -2) {
                     letzteAktualisierung = "Letzte Aktualisierung: vorgestern, " + uhrzeit;
                 } else {
-                    letzteAktualisierung = "Letzte Aktualiserung: " + (gTag + 1) + "." + (gMonat + 1) + "." + gJahr + ", " + uhrzeit;
+                    letzteAktualisierung = "Letzte Aktualiserung: " + (gTag) + "." + (gMonat + 1) + "." + gJahr + ", " + uhrzeit;
                 }
 
 
