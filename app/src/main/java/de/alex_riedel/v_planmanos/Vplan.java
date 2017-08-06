@@ -23,7 +23,7 @@ class Vplan {
 
 
     private String[] klasse = new String[100];                          //Spalte "Klasse/Kurs"
-    private String[] stunde = new String[100];                          //Spalte "St."
+    private String[] stunde = new String[100];                          //Spalte "Stunde"
     private String[] fach = new String[100];                            //Spalte "Fach"
     private String[] lehrer = new String[100];                          //Spalte "Lehrer"
     private String[] raum = new String[100];                            //Spalte "Raum"
@@ -52,7 +52,7 @@ class Vplan {
 //        MeiKlasse=einstellungen.getString("MeiKlasse", "Ladefehlerfehler: klasse");
 
 
-        auswerten(alles);
+        auswerten2(alles);
         if(!problem&&speichern) {
             speichern(dat, context);
         } else {
@@ -70,21 +70,21 @@ class Vplan {
         return datum;
     }
 
-//    public String getVeroefdat(){
-//        return veroefdat;
-//    }
-//
-//    public String getAbLehrer(){
-//        return abLehrer;
-//    }
-//
-//    public String getAenLeher(){
-//        return aenLeher;
-//    }
-//
-//    public String getAenKlassen(){
-//        return aenKlassen;
-//    }
+    public String getVeroefdat(){
+        return veroefdat;
+    }
+
+    public String getAbLehrer(){
+        return abLehrer;
+    }
+
+    public String getAenLeher(){
+        return aenLeher;
+    }
+
+    public String getAenKlassen(){
+        return aenKlassen;
+    }
 
     String getZusInfo(){
         return zusInfo;
@@ -283,32 +283,43 @@ class Vplan {
 
         while (zaehler <= aenAnzahl) {
             if (isKurs){
-                kurs=" ("+klasse[aenZeilen[zaehler]].substring(6)+")";
+                if (klasse[aenZeilen[zaehler]].length()>6) {
+                    kurs = " (" + klasse[aenZeilen[zaehler]].substring(6) + ")";
+                }else {
+                    kurs =  " (" + klasse[aenZeilen[zaehler]] + ")";
+                }
             }
 
 
-            if ("".equals(raum[aenZeilen[zaehler]])) {      //Falls kein raum vorhanden ist:
+            if ("".equals(raum[aenZeilen[zaehler]])) {      //Falls kein Raum vorhanden ist:
 
                 ausgabe[zaehler]= stunde[aenZeilen[zaehler]] + ". Stunde" + kurs + ":\n" +
-                        "" + fach[aenZeilen[zaehler]] + " " + lehrer[aenZeilen[zaehler]] + "\n" +
-                        "" + "(" + info[aenZeilen[zaehler]] + ")"; //Text setzen
+                        "" + fach[aenZeilen[zaehler]] + " " + lehrer[aenZeilen[zaehler]];
 
                 share = share +
                         "" + stunde[aenZeilen[zaehler]] + ". Stunde" + kurs + ":\n" +
-                        "" + fach[aenZeilen[zaehler]] + " " + lehrer[aenZeilen[zaehler]] + "\n" +
-                        "" + "(" + info[aenZeilen[zaehler]] + ")" + "\n\n";
+                        "" + fach[aenZeilen[zaehler]] + " " + lehrer[aenZeilen[zaehler]];
 
             } else {                                        //Wenn ein raum vorhadne ist:
 
                 ausgabe[zaehler]= stunde[aenZeilen[zaehler]] + ". Stunde" + kurs + ":\n" +
-                        "" + fach[aenZeilen[zaehler]] + " " + lehrer[aenZeilen[zaehler]] + "; Raum: " + raum[aenZeilen[zaehler]] + "\n" +
-                        "" + "(" + info[aenZeilen[zaehler]] + ")";  //Text setzen
+                        "" + fach[aenZeilen[zaehler]] + " " + lehrer[aenZeilen[zaehler]] + "; Raum: " + raum[aenZeilen[zaehler]];
 
                 share = share +
                         "" + stunde[aenZeilen[zaehler]] + ". Stunde" + kurs + ":\n" +
-                        "" + fach[aenZeilen[zaehler]] + " " + lehrer[aenZeilen[zaehler]] + "; Raum: " + raum[aenZeilen[zaehler]] + "\n" +
-                        "" + "(" + info[aenZeilen[zaehler]] + ")" + "\n\n";
+                        "" + fach[aenZeilen[zaehler]] + " " + lehrer[aenZeilen[zaehler]] + "; Raum: " + raum[aenZeilen[zaehler]];
             }
+
+            if (!"".equals(info[aenZeilen[zaehler]])) {      //Falls eine Info vorhanden ist:
+                ausgabe[zaehler]=ausgabe[zaehler] + "\n" +
+                        "" + "(" + info[aenZeilen[zaehler]] + ")";
+                share = share + "\n" +
+                        "" + "(" + info[aenZeilen[zaehler]] + ")" + "\n\n";
+            }else{
+                ausgabe[zaehler]=ausgabe[zaehler] + "\n";
+                share = share + "\n\n";
+            }
+
             zaehler++;
         }
 
@@ -369,6 +380,10 @@ class Vplan {
                                 aenZeilen[aenAnzahl] = Zeile;           //Zeile mit Aenderung speichern
                             }
 
+                        }
+                        if (klasse[Zeile].equals(meiKlasse)){
+                            aenAnzahl++;                            //Aenderungsanzahl um eins erhoehen
+                            aenZeilen[aenAnzahl] = Zeile;           //Zeile mit Aenderung speichern
                         }
                     } catch (Exception enull) {
 //                        abbruch = true;
@@ -581,6 +596,93 @@ class Vplan {
 
     }
 
+    private void auswerten2(String alles[]){
+        //        alles[] wird ausgewertet: Variablen datum, abLehrer, aenLeher, aenKlassen, klasse[], stunde[], fach[], lehrer[], raum[] und info[] werden ausgelesen.
+
+        //Setup des Indexes [0] mit Werten, damit diese ungleich null sind
+        klasse[0] = "13b";
+        stunde[0] = "0";
+        fach[0] = "Bei";
+        lehrer[0] = "Kei";
+        raum[0] = "042";
+        info[0] = "Beispielstunde";
+
+        aenAnzahl =0;
+
+        Calendar c = Calendar.getInstance();
+        int jahr = c.get(Calendar.YEAR);
+
+
+
+
+        if (alles[1]==null){
+            problem=true;
+            fehler="Verbindungsfehler\n" +alles[0];
+        }else {
+            int zeile=zeileenthaelt(alles, 8, ""+jahr);     //Die erste relevante Zeile wird gesucht
+            datum = zeileauslesen(alles, zeile,0);
+
+            zeile = zeileenthaelt(alles, zeile+1,""+jahr);
+            veroefdat = zeileauslesen(alles, zeile,0);
+
+            zeile = zeilefinden(alles, 10,"Lehrer mit Änderung:");
+            aenLeher = zeileauslesen(alles, zeile+1,0);
+
+            zeile = zeilefinden(alles, 10,"Klassen mit Änderung:");
+            aenKlassen = zeileauslesen(alles, zeile+1,0);
+
+            zeile = zeilefinden(alles, 10,"Abwesende Lehrer:");
+            abLehrer = zeileauslesen(alles, zeile+1,0);
+
+            zeile = zeilefinden(alles, 10,"Info");
+            aenlesen2(alles,zeile+3);
+
+            //TODO Zusaetzliche informationen auslesen
+
+
+
+
+
+
+
+        }
+
+
+
+    }
+
+    private void aenlesen2(String[]alles, int zeile){
+        int aenNummer=1;
+        while (alles[zeile].length()>20){
+            klasse[aenNummer]=zeileauslesen(alles,zeile,0);
+            stunde[aenNummer]=zeileauslesen(alles,zeile+1,0);
+            fach[aenNummer]=zeileauslesen(alles,zeile+2,0);
+            lehrer[aenNummer]=zeileauslesen(alles,zeile+3,0);
+            raum[aenNummer]=zeileauslesen(alles,zeile+4,0);
+            info[aenNummer]=zeileauslesen(alles,zeile+5,0);
+
+            if(stunde[aenNummer].contains("-")){
+                String stunden[] = stunde[aenNummer].split("-");
+                int anz = Integer.parseInt(stunden[1])-Integer.parseInt(stunden[0]);
+
+                for (int i=0;i<=anz;i++){
+                    klasse[aenNummer+i]=klasse[aenNummer];
+                    stunde[aenNummer+i]=(Integer.parseInt(stunden[0])+i)+"";
+                    fach[aenNummer+i]=fach[aenNummer];
+                    lehrer[aenNummer+i]=lehrer[aenNummer];
+                    raum[aenNummer+i]=raum[aenNummer];
+                    info[aenNummer+i]=info[aenNummer];
+                }
+                aenNummer=aenNummer+anz;
+            }
+
+
+            aenNummer++;
+            zeile=zeile+8;
+        }
+        klasse[0]=""+(aenNummer-1);
+    }
+
     private void auswerten(String[]alles){
 //        alles[] wird ausgewertet: Variablen datum, abLehrer, aenLeher, aenKlassen, klasse[], stunde[], fach[], lehrer[], raum[] und info[] werden ausgelesen.
 
@@ -591,6 +693,10 @@ class Vplan {
         lehrer[0] = "Kei";
         raum[0] = "042";
         info[0] = "Beispielstunde";
+
+        Calendar c = Calendar.getInstance();
+        int jahr = c.get(Calendar.YEAR);
+
 
 
         aenAnzahl =0;
@@ -610,7 +716,7 @@ class Vplan {
 
 
                 datum = zeileauslesen(alles, Zeile, letztesZeichen + 20);           //datum wird ausgelesen
-                Zeile = zeileenthaelt(alles, Zeile, "2016");                        //naechste relevante Zeile wird gesucht
+                Zeile = zeileenthaelt(alles, Zeile, ""+jahr);                       //naechste relevante Zeile wird gesucht
 
 
                 if (Zeile != -1) {
@@ -662,7 +768,7 @@ class Vplan {
                             zusInfoBool = false;
                             zusInfo = "";
                             problem = true;
-                            fehler = "Leider ist eine Fehler beim Auswerten des Planes aufgetaucht. Bitte die Internetseite (manos-dresden.de/aktuelles/vplan.php) nutzen.\\n\\nSorry!\"";
+                            fehler = "Leider ist eine Fehler beim Auswerten des Planes aufgetaucht. Bitte die Internetseite (manos-dresden.de/aktuelles/vplan.php) nutzen.\n\nSorry!";
                         }
                     }else {
                         //Aenderungen auslesen
@@ -693,7 +799,7 @@ class Vplan {
 
                 } else {
                     problem = true;//Der Plan konnte nicht ausgelesen werden
-                    fehler = "Leider ist eine Fehler beim Auswerten des Planes aufgetaucht. Bitte die Internetseite (manos-dresden.de/aktuelles/vplan.php) nutzen.\\n\\nSorry!\"";
+                    fehler = "Leider ist eine Fehler beim Auswerten des Planes aufgetaucht. Bitte die Internetseite (manos-dresden.de/aktuelles/vplan.php) nutzen.\n\nSorry!";
                 }
             } else {
                 problem = true;   //Der Plan konnte nicht ausgelesen werden

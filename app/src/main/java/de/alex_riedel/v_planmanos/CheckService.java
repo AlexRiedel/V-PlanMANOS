@@ -177,7 +177,7 @@ public class CheckService extends Service {
         m.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), service);                        //Alarmmanger konfigurieren (=starten)
 
 
-        Nachricht("Nächster:",s,5); //Zu debuging Zwecken
+//        Nachricht("Nächster:",s,5); //Zu debuging Zwecken
 
         stopSelf();                                                                             //Service beenden
     }
@@ -308,12 +308,11 @@ public class CheckService extends Service {
 
 
             try { //erzeugen der URL
-//                url = new URL("http://manos-dresden.de/aktuelles/vplan.php");
-                url = new URL("http://manos-dresden.de/aktuelles/vplan.php?view=print");
+              url = new URL("http://manos-dresden.de/aktuelles/quellen/VPlan_Schueler.html");     //Neue Adresse
                 verbindung = (HttpURLConnection) url.openConnection();
                 try {
                     InputStream stream = new BufferedInputStream(verbindung.getInputStream());
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(stream,"iso-8859-1"));
 
 
                     while ((zeile=reader.readLine())!=null){

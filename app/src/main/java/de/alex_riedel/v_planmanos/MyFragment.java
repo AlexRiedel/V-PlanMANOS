@@ -1,6 +1,7 @@
 package de.alex_riedel.v_planmanos;
 
 
+import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -26,19 +27,33 @@ public class MyFragment extends Fragment {
 
 
     //Layoutkompnenten:
-    private LinearLayout linearLayout;
+    private LinearLayout linearLayout1;
+    private LinearLayout linearLayout2;
     private SwipeRefreshLayout mSwipeRefreshLayout1;
 
-
-    private TextView textOben1;
-    private TextView textOben2;
+    private TextView textDatum;
+    private TextView textInfo;
+    private TextView textAktZeit;
     private TextView textUnten1;
     private TextView textUnten2;
+    private TextView textVeroef1;
+    private TextView textVeroef2;
+
+    private TextView textAbLehrer1;
+    private TextView textAbLehrer2;
+
+    private TextView textAenLehrer1;
+    private TextView textAenLehrer2;
+
+    private TextView textAenKlasse1;
+    private TextView textAenKlasse2;
 
     private CardView cardOben;
+    private CardView cardMitte;
     private CardView cardUnten;
 
-    private Button button;
+    private Button buttonRefresh;
+    private Button buttonMehr;
 
     public CardView[] cardViews = new CardView[50];
     public TextView[] textViews = new TextView[50];
@@ -70,19 +85,48 @@ public class MyFragment extends Fragment {
         // Inflate the layout for this fragment
         View layout = inflater.inflate(R.layout.fragment_my, container, false);
 
-        linearLayout = (LinearLayout) layout.findViewById(R.id.linearLayout);
+        //linearLayout1 = (LinearLayout) layout.findViewById(R.id.linearLayout1);
+        linearLayout2 = (LinearLayout) layout.findViewById(R.id.linearLayout2);
         mSwipeRefreshLayout1 =(SwipeRefreshLayout) layout.findViewById(R.id.swipeRefreshLayout1);
 
 
-        textOben1 = (TextView) layout.findViewById(R.id.textOben1);
-        textOben2 = (TextView) layout.findViewById(R.id.textOben2);
+        textDatum = (TextView) layout.findViewById(R.id.textDatum);
+        textInfo = (TextView) layout.findViewById(R.id.textInfo);
+        textAktZeit = (TextView) layout.findViewById(R.id.textAktZeit);
         textUnten1 = (TextView) layout.findViewById(R.id.textUnten1);
         textUnten2 = (TextView) layout.findViewById(R.id.textUnten2);
 
         cardOben = (CardView) layout.findViewById(R.id.cardOben);
+        cardMitte = (CardView) layout.findViewById(R.id.cardMitte);
         cardUnten = (CardView) layout.findViewById(R.id.cardUnten);
 
-        button = (Button) layout.findViewById(R.id.button);
+        buttonRefresh = (Button) layout.findViewById(R.id.buttonRefresh);
+
+
+        textVeroef1 = (TextView) layout.findViewById(R.id.textVeroef1);
+        textVeroef2 = (TextView) layout.findViewById(R.id.textVeroef2);
+
+        textAbLehrer1 = (TextView) layout.findViewById(R.id.textAbLehrer1);
+        textAbLehrer2 = (TextView) layout.findViewById(R.id.textAbLehrer2);
+
+        textAenLehrer1 = (TextView) layout.findViewById(R.id.textAenLehrer1);
+        textAenLehrer2 = (TextView) layout.findViewById(R.id.textAenLehrer2);
+
+        textAenKlasse1 = (TextView) layout.findViewById(R.id.textAenKlasse1);
+        textAenKlasse2 = (TextView) layout.findViewById(R.id.textAenKlasse2);
+
+        buttonMehr = (Button) layout.findViewById(R.id.ButtonMehr);
+        buttonMehr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                makeVisible();
+            }
+        });
+
+        linearLayout1 = (LinearLayout) layout.findViewById(R.id.linearLayout1);
+        LayoutTransition  transition = linearLayout1.getLayoutTransition();
+        transition.enableTransitionType(LayoutTransition.CHANGING);
+
 
 
         mSwipeRefreshLayout1.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -138,18 +182,19 @@ public class MyFragment extends Fragment {
         try {
             removeCardViews();  //eventuelle CardViews enstfernen, damit Platz fuer den alternativen Text ist
 
-            cardOben.setVisibility(View.VISIBLE);       //Benoetigte Elemente sichtbar machen
-            textOben1.setVisibility(View.VISIBLE);
-            textOben1.setText(text);
+            cardMitte.setVisibility(View.VISIBLE);       //Benoetigte Elemente sichtbar machen
+            textInfo.setVisibility(View.VISIBLE);
+            textInfo.setText(text);
 
             if (buttonVisible){
-                button.setVisibility(View.VISIBLE);
-                textOben2.setVisibility(View.VISIBLE);
+                buttonRefresh.setVisibility(View.VISIBLE);
+                textAktZeit.setVisibility(View.VISIBLE);
+                cardOben.setVisibility(View.GONE);
                 aktualisieren();
 
             }else {
-                button.setVisibility(View.GONE);
-                textOben2.setVisibility(View.GONE);
+                buttonRefresh.setVisibility(View.GONE);
+                textAktZeit.setVisibility(View.GONE);
             }
 
 
@@ -229,9 +274,9 @@ public class MyFragment extends Fragment {
 
 
 
-                textOben2.setText(letzteAktualisierung);
+                textAktZeit.setText(letzteAktualisierung);
             }else {
-                textOben2.setVisibility(View.GONE);
+                textAktZeit.setVisibility(View.GONE);
             }
         }catch (NullPointerException enull){
             enull.printStackTrace();
@@ -258,10 +303,7 @@ public class MyFragment extends Fragment {
     private void vplanZeigen()throws NullPointerException{
         //Vertretungsplan darstellen:
         try {
-            cardOben.setVisibility(View.GONE);      //nicht benoetigte Elemente unsichtbar machen
-            textOben1.setVisibility(View.GONE);
-            textOben2.setVisibility(View.GONE);
-            button.setVisibility(View.GONE);
+            cardMitte.setVisibility(View.GONE);      //nicht benoetigte Elemente unsichtbar machen
 
 
 
@@ -288,6 +330,14 @@ public class MyFragment extends Fragment {
 
                 }
             }
+
+            cardOben.setVisibility(View.VISIBLE);
+            textDatum.setText(vplan.getDatum());
+            textVeroef2.setText(vplan.getVeroefdat());
+            textAenLehrer2.setText(vplan.getAenLeher());
+            textAbLehrer2.setText(vplan.getAbLehrer());
+            textAenKlasse2.setText(vplan.getAenKlassen());
+
 
             if (vplan.isZusInfoBool()){ //Zusaetzliche Informationen anzeigen
                 setZusInfo(vplan.getZusInfo());
@@ -370,7 +420,7 @@ public class MyFragment extends Fragment {
 
 
         cardViews[anzahlCards].addView(textViews[anzahlCards]);     //Textfeld der Karte hinzufuegen
-        linearLayout.addView(cardViews[anzahlCards]);               //Karte dem Layout hinzufuegen
+        linearLayout2.addView(cardViews[anzahlCards]);               //Karte dem Layout hinzufuegen
 
         anzahlCards++;  //Weiterzaehlen
     }
@@ -379,7 +429,7 @@ public class MyFragment extends Fragment {
         //Entfernen der Karten, die den Vertretungsplan darstellen
         try {
             for (int i=0;i<=anzahlCards;i++){
-                linearLayout.removeView(cardViews[i]);
+                linearLayout2.removeView(cardViews[i]);
             }
         }catch (NullPointerException enull){
             enull.printStackTrace();
@@ -462,9 +512,22 @@ public class MyFragment extends Fragment {
         return unterschied;
     }
 
+    private void makeVisible(){
+        if (textVeroef1.getVisibility() == View.VISIBLE) {
+            View[] view = {textAbLehrer1, textAbLehrer2, textAenKlasse1, textAenKlasse2, textAenLehrer1, textAenLehrer2, textVeroef1, textVeroef2};
 
+            for (final View aView : view) {
+                aView.setVisibility(View.GONE);
+            }
+            buttonMehr.setText("mehr");
 
-
-
+        }else {
+            View[] view = {textAbLehrer1, textAbLehrer2, textAenKlasse1, textAenKlasse2, textAenLehrer1, textAenLehrer2, textVeroef1, textVeroef2};
+            for (final View aView : view) {
+                aView.setVisibility(View.VISIBLE);
+            }
+            buttonMehr.setText("weniger");
+        }
+    }
 
 }

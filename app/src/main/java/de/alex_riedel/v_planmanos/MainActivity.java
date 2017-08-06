@@ -16,12 +16,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
@@ -204,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void buttonRefrech (View v){
+    public void buttonRefresh(View v){
         //Methode, die der Butten aufruft
         if (isOnline()) {
             fragment1.manRefrech();
@@ -370,14 +372,14 @@ public class MainActivity extends AppCompatActivity {
 
 
             try { //erzeugen der URL
-                url = new URL("http://manos-dresden.de/aktuelles/vplan.php?view=print");            //Druckansicht, um Datenverbrauch zu minimieren
+                url = new URL("http://manos-dresden.de/aktuelles/quellen/VPlan_Schueler.html");     //Neue Adresse
                 verbindung = (HttpURLConnection) url.openConnection();                              //Starten der Verbindung
                 verbindung.connect();
                 alles[0]=String.valueOf(verbindung.getResponseCode());                              //Responsecode zur evt. Fehleranalyse speichern
 
                 try {
                     InputStream stream = new BufferedInputStream(verbindung.getInputStream());      //Auslesen
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(stream,"iso-8859-1"));
 
 
                     while ((zeile=reader.readLine())!=null){
@@ -414,7 +416,7 @@ public class MainActivity extends AppCompatActivity {
 
             Vplan vplan1 = new Vplan("vplan1",MainActivity.this.getApplicationContext());
             Vplan vplan2 = new Vplan("vplan2",MainActivity.this.getApplicationContext());
-            Vplan vplan3=new Vplan("vplan3",alles,MainActivity.this.getApplicationContext(),false);       //neuen Vplan aus heruntergeladenen Daten
+            Vplan vplan3 = new Vplan("vplan3",alles,MainActivity.this.getApplicationContext(),false);       //neuen Vplan aus heruntergeladenen Daten
 
 
 

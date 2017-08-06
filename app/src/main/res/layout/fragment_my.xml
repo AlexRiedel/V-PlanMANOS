@@ -16,19 +16,158 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:id="@+id/linearLayout"
+                    android:id="@+id/linearLayout1"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
                     android:orientation="vertical"
-                    android:isScrollContainer="true">
+                    android:isScrollContainer="true"
+                    android:animateLayoutChanges="true">
 
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/cardOben"
                         android:visibility="visible"
-                        android:layout_margin="20dp"
-                        android:layout_gravity="top">
+                        android:layout_margin="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_gravity="top"
+                        android:elevation="10dp">
+
+                        <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textDatum"
+                                android:visibility="visible"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginRight="15dp"
+                                android:text="Montag, 28.11.2016 (A-Woche)"
+                                android:textSize="20sp"
+                                android:autoLink="web"/>
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textVeroef1"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginRight="15dp"
+                                android:textStyle="bold"
+                                android:text="Veröffentlicht:"
+                                android:visibility="gone"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textVeroef2"
+                                android:layout_marginLeft="17dp"
+                                android:layout_marginRight="15dp"
+                                android:layout_marginBottom="5dp"
+                                android:text="24.11.2016, 11:23 Uhr"
+                                android:visibility="gone"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textAbLehrer1"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginRight="15dp"
+                                android:textStyle="bold"
+                                android:text="Abwesende Lehrer:"
+                                android:visibility="gone"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textAbLehrer2"
+                                android:layout_marginLeft="17dp"
+                                android:layout_marginRight="15dp"
+                                android:layout_marginBottom="5dp"
+                                android:text="Bon, Hen, Hof, Pla, ScR (3.-12.Stunde)"
+                                android:visibility="gone"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textAenLehrer1"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginRight="15dp"
+                                android:textStyle="bold"
+                                android:text="Lehrer mit Änderung:"
+                                android:visibility="gone"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textAenLehrer2"
+                                android:layout_marginLeft="17dp"
+                                android:layout_marginRight="15dp"
+                                android:layout_marginBottom="5dp"
+                                android:text="Ber, Gei, Gey, Gos, Got, Hal, Här, Keg, Kna, Kra, Mei, Mic, Nag, Nen, Sch, Sck, Tho, Wei"
+                                android:visibility="gone"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textAenKlasse1"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginRight="15dp"
+                                android:textStyle="bold"
+                                android:text="Klassen mit Änderung:"
+                                android:visibility="gone"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textAenKlasse2"
+                                android:layout_marginLeft="17dp"
+                                android:layout_marginRight="15dp"
+                                android:layout_marginBottom="5dp"
+                                android:text="5a, 5b, 6b, 6c, 7a, 7b, 8a, 8b, 8c, 9a, 9b, 9c, JG11, JG12"
+                                android:visibility="gone"
+                                />
+
+
+
+
+
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/ButtonMehr"
+                                android:text="mehr"
+                                android:layout_gravity="right"
+                                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                                />
+
+
+
+
+
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/cardMitte"
+                        android:visibility="gone"
+                        android:layout_margin="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_gravity="top"
+                        android:elevation="10dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -38,32 +177,39 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/textOben1"
+                                android:id="@+id/textInfo"
                                 android:visibility="visible"
                                 android:layout_marginTop="10dp"
                                 android:layout_marginBottom="10dp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginRight="15dp"
-                                android:text="Wird geladen..."
+                                android:text="Hier steht die wichtige Info."
                                 android:textSize="20sp"
                                 android:autoLink="web"/>
+
+
+
+
 
                             <Button
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/button"
+                                android:id="@+id/buttonRefresh"
                                 android:visibility="visible"
-                                android:onClick="buttonRefrech"
+                                android:onClick="buttonRefresh"
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginBottom="5dp"
                                 android:text="Erneut versuchen"/>
 
+
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/textOben2"
+                                android:id="@+id/textAktZeit"
+                                android:visibility="gone"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginRight="15dp"
                                 android:layout_marginBottom="10dp"
@@ -71,9 +217,23 @@
                                 android:text="Letzte Aktualisierung: 13:46 Uhr"/>
 
 
+
+
                         </LinearLayout>
 
                     </android.support.v7.widget.CardView>
+
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout2"
+                        android:layout_height="wrap_content"
+                        android:layout_width="fill_parent"
+                        android:orientation="vertical"
+
+
+                        android:isScrollContainer="true">
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
