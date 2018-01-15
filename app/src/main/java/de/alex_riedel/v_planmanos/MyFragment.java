@@ -444,62 +444,67 @@ public class MyFragment extends Fragment {
         mainActivity.herunterladen();
     }
 
-    private int nextStunde () {
+    private int nextStunde () throws NullPointerException {
         //Liefert, welche Stunde gerade ist, oder als naechstes gehalten wird; evtl 0, falls der Unterricht beendet ist, oder noch nicht begonnen hat
+        try {
+            SharedPreferences einstellungen = PreferenceManager.getDefaultSharedPreferences(mainActivity.getApplicationContext());
 
-        SharedPreferences einstellungen = PreferenceManager.getDefaultSharedPreferences( mainActivity.getApplicationContext());
-        int minute;                         //Aktuelle Minute
-        int stunde;                         //Aktelle Stunde (Uhrzeit)
-        int next = 0;                       //Rueckgabevariable
+            int minute;                         //Aktuelle Minute
+            int stunde;                         //Aktelle Stunde (Uhrzeit)
+            int next = 0;                       //Rueckgabevariable
 
-        boolean abbruch = false;            //Abbruchvariable, zum  Abbrechen von Schleifen
+            boolean abbruch = false;            //Abbruchvariable, zum  Abbrechen von Schleifen
 
-        int[] endeStund = {0, 8, 8,10,10,11,42,14,14,15,16,17,18};    //Wann zB die 1. Stunde endet, in Uhrzeitstuden (Um 12 Minuten nach vorne gezogen!)
-        int[] endeMinut = {0, 3,58, 3,58,53,42, 3,53,43,33,23,13};    //Wann zB die 1. Stunde endet, in Uhrzeitminuten
+            int[] endeStund = {0, 8, 8,10,10,11,42,14,14,15,16,17,18};    //Wann zB die 1. Stunde endet, in Uhrzeitstuden (Um 12 Minuten nach vorne gezogen!)
+            int[] endeMinut = {0, 3,58, 3,58,53,42, 3,53,43,33,23,13};    //Wann zB die 1. Stunde endet, in Uhrzeitminuten
 
-        if (einstellungen.getBoolean("anderePause",false)) {     //Die Mittagspause der 5. und 6. Klassen ist verschoben!
-            endeStund[6] = 13;
-            endeMinut[6] = 20;
-        } else {
-            endeStund[6] = 12;
-            endeMinut[6] = 48;
-        }
-
+            if (einstellungen.getBoolean("anderePause",false)) {     //Die Mittagspause der 5. und 6. Klassen ist verschoben!
+                endeStund[6] = 13;
+                endeMinut[6] = 20;
+            } else {
+                endeStund[6] = 12;
+                endeMinut[6] = 48;
+            }
 
 
 
-        Calendar time=Calendar.getInstance();       //Kalender erzeugen
-        minute=time.get(Calendar.MINUTE);           //Minute auslesen
-        stunde=time.get(Calendar.HOUR_OF_DAY);      //Stunde auslesen
 
-        //Herausbekommen, welche die naechste Stunde ist
-        while (!abbruch) {
-            next++;
-            try {
-                if (stunde == endeStund[next]) {
-                    if (minute <= endeMinut[next]) {
+            Calendar time=Calendar.getInstance();       //Kalender erzeugen
+            minute=time.get(Calendar.MINUTE);           //Minute auslesen
+            stunde=time.get(Calendar.HOUR_OF_DAY);      //Stunde auslesen
+
+            //Herausbekommen, welche die naechste Stunde ist
+            while (!abbruch) {
+                next++;
+                try {
+                    if (stunde == endeStund[next]) {
+                        if (minute <= endeMinut[next]) {
+                            abbruch = true;
+                        }
+                    }
+                    if (stunde < endeStund[next]) {
                         abbruch = true;
                     }
-                }
-                if (stunde < endeStund[next]) {
+                } catch (IndexOutOfBoundsException ebound) {
+                    next = 0;
                     abbruch = true;
                 }
-            } catch (IndexOutOfBoundsException ebound) {
-                next = 0;
-                abbruch = true;
             }
+
+            //Bedingungen, unter dene es keine naechste Stunde gibt:
+
+            Calendar heute = Calendar.getInstance();    //Heutiges Datum
+            Calendar date = vplan.getCalendar();
+
+            if (vergleiche(heute,date)!=0){ //Wenn der Plan nicht von heute ist
+                next = 0;
+            }
+
+            return next;
+        }catch (NullPointerException enull){
+            enull.printStackTrace();
+            throw enull;
         }
-
-        //Bedingungen, unter dene es keine naechste Stunde gibt:
-
-        Calendar heute = Calendar.getInstance();    //Heutiges Datum
-        Calendar date = vplan.getCalendar();
-
-        if (vergleiche(heute,date)!=0){ //Wenn der Plan nicht von heute ist
-            next = 0;
-        }
-
-        return next;
     }
 
     private int vergleiche(Calendar c1, Calendar c2){

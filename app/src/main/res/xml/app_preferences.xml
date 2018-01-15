@@ -38,6 +38,16 @@
 
         />
 
+    <android.support.v7.preference.SwitchPreferenceCompat
+        android:key="alleKurse"
+        android:title="Alle Kurse anzeigen"
+        android:summaryOff="Es werden nur Änderungen für die ausgewählten Kurse angezeigt."
+        android:summaryOn="Alle Änderungen für den Jahrgang werden angezeigt."
+        android:switchTextOff="switchTextOff"
+        android:switchTextOn="switchTextOn"
+        android:defaultValue="false"
+        />
+
     <android.support.v7.preference.PreferenceCategory
         android:title="Kurswahl"
         android:key="kurswahl">

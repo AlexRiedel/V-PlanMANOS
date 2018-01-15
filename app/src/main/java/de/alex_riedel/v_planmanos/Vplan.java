@@ -357,11 +357,12 @@ class Vplan {
 
         boolean abbruch=false;                                      //zum abbrechen der Schleife
         boolean isKurs = sharedPref.getBoolean("isKurs",false);
+        boolean alleKurse = sharedPref.getBoolean("alleKurse",false);
 
         String meiKlasse = sharedPref.getString("klasse", "13a");
 
 
-        if (isKurs){
+        if (isKurs&&(!alleKurse)){
             String[] a = {"ast","bio","ch","de","en","eth","fr","geo","grw","ge","inf","ku","la","ma","mu","ph","spo"};
             String[] kurs=new String[17];
 
@@ -619,10 +620,16 @@ class Vplan {
             problem=true;
             fehler="Verbindungsfehler\n" +alles[0];
         }else {
-            int zeile=zeileenthaelt(alles, 8, ""+jahr);     //Die erste relevante Zeile wird gesucht
+            int zeile=zeileenthaelt(alles, 4, ""+(jahr+1));     //Die erste relevante Zeile wird gesucht
+            if (zeile==-1){
+                zeile = zeileenthaelt(alles, zeile+1,""+jahr);
+            }
             datum = zeileauslesen(alles, zeile,0);
 
             zeile = zeileenthaelt(alles, zeile+1,""+jahr);
+            if (zeile==-1){
+                zeile = zeileenthaelt(alles, 4,""+(jahr-1));
+            }
             veroefdat = zeileauslesen(alles, zeile,0);
 
             zeile = zeilefinden(alles, 10,"Lehrer mit Änderung:");

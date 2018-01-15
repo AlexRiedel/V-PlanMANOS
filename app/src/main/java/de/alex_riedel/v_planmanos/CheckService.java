@@ -308,7 +308,7 @@ public class CheckService extends Service {
 
 
             try { //erzeugen der URL
-              url = new URL("http://manos-dresden.de/aktuelles/quellen/VPlan_Schueler.html");     //Neue Adresse
+              url = new URL("http://manos-dresden.de/man_vertretungsplan/VPlan_Schueler.html");     //Neue Adresse
                 verbindung = (HttpURLConnection) url.openConnection();
                 try {
                     InputStream stream = new BufferedInputStream(verbindung.getInputStream());

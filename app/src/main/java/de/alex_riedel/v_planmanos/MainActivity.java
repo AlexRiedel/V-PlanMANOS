@@ -141,14 +141,18 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Vplan fuer linkes Fragment auswaehlen
-        if (vergleiche(heute,date1)== 0){
+        if (vergleiche(heute,date1)== 0){//1 von heute
             setVplan(fragment1,vplan1,null,0);
-        }else if (vergleiche(heute,date2) == 0){
-            setVplan(fragment1,vplan2,null,0);
-        }else if (vergleiche(date1,date2)<= 0 && vergleiche(heute,date1) > 0){
+        }else if (vergleiche(heute,date2) == 0){//2 von heute
+            setVplan(fragment1,vplan2,null,0);                          //3Fälle 1) beide alt, 2) nr.1 neu 3) nr.2 neu
+        }else if (vergleiche(heute,date2) < 0 && vergleiche(heute,date1) > 0){// 2 von morgen, 1 von gestern
             setVplan(fragment1,vplan1,null,0);
-        }else if (vergleiche(date2,date1)<= 0 && vergleiche(heute,date2) > 0){
+        }else if (vergleiche(heute,date1) < 0 && vergleiche(heute,date2) > 0){//1 von morgen, 2 von gestern
             setVplan(fragment1,vplan2,null,0);
+        }else if (vergleiche(date1,date2) <= 0 && vergleiche(heute,date2) >= 0){//2 neuer/gleich 1 und 2 nicht von morgen
+            setVplan(fragment1,vplan2,null,0);
+        }else if (vergleiche(date1,date2) > 0 && vergleiche(heute,date1) >= 0){//1 neuer 2 und 1 nicht von morgen
+            setVplan(fragment1,vplan1,null,0);
         }else {
             setVplan(fragment1,null,"Keine Daten verfügbar",0);
 
@@ -260,6 +264,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public static MyFragment newInstance(int index) {
+        MyFragment f = new MyFragment();
+
+        // Supply index input as an argument.
+        Bundle args = new Bundle();
+        args.putInt("index", index);
+        f.setArguments(args);
+
+        return f;
+    }
 
 
 //Private Methoden
@@ -342,8 +356,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        fragment1 = new MyFragment();
-        fragment2 = new MyFragment();
+        fragment1 = newInstance(0);
+        fragment2 = newInstance(0);
         fragment1.setName("fragment1");
         fragment2.setName("fragment2");
 
@@ -372,7 +386,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             try { //erzeugen der URL
-                url = new URL("http://manos-dresden.de/aktuelles/quellen/VPlan_Schueler.html");     //Neue Adresse
+                url = new URL("http://manos-dresden.de/man_vertretungsplan/VPlan_Schueler.html");     //Neue Adresse
                 verbindung = (HttpURLConnection) url.openConnection();                              //Starten der Verbindung
                 verbindung.connect();
                 alles[0]=String.valueOf(verbindung.getResponseCode());                              //Responsecode zur evt. Fehleranalyse speichern
@@ -433,7 +447,13 @@ public class MainActivity extends AppCompatActivity {
                 //Auswhal der beiden anzuzeigenden Plaene:
 
                 if (vergleiche(heute, date3) < 0) {                            //Wenn Plan3 von (ueber-)morgen:
-                    if (vergleiche(date1, date2) < 0) {                       //...diesen als Plan1 bzw. Plan2 (jenachdem, welcher der beiden aelter ist) speichern und anzeigen
+                    if (vergleiche(date1,date3) == 0){                         //pruefen, ob bereits ein Plan fuer diesen Tag vorhanden ist....
+                        vplan1 = new Vplan("vplan1", alles, MainActivity.this.getApplicationContext(),true);    //...und den entsprechenden Plan ersetzten...
+                        setVplan(fragment2,vplan1,null,0);                                                      //...und anzeigen,
+                    }else if (vergleiche(date2,date3) == 0){
+                        vplan2 = new Vplan("vplan2", alles, MainActivity.this.getApplicationContext(),true);
+                        setVplan(fragment2,vplan2,null,0);
+                    }else if (vergleiche(date1, date2) < 0) {                       //...sonst: diesen als Plan1 bzw. Plan2 (jenachdem, welcher der beiden aelter ist) speichern und anzeigen
                         vplan1 = new Vplan("vplan1", alles, MainActivity.this.getApplicationContext(),true);
                         setVplan(fragment2,vplan1,null,0);
                     } else {
