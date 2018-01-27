@@ -1009,9 +1009,14 @@ class Vplan {
                                                 if (umlaut.equals("nbsp;")) {
                                                     Ausgabe = Ausgabe + "";
                                                     index = index + 6;
-                                                } else {
-                                                    Ausgabe = Ausgabe + "?";
-                                                    index++;
+                                                }else {
+                                                    if (umlaut.equals("amp;")) {
+                                                        Ausgabe = Ausgabe + "&";
+                                                        index = index + 5;
+                                                    } else {
+                                                        Ausgabe = Ausgabe + "?";
+                                                        index++;
+                                                    }
                                                 }
                                             }
                                         }

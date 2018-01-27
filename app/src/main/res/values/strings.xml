@@ -40,6 +40,7 @@
         <item>BIO2</item>
         <item>bio1</item>
         <item>bio2</item>
+        <item>kein Biologie</item>
     </string-array>
     
     <string-array name="ch">
@@ -47,6 +48,7 @@
         <item>CH2</item>
         <item>ch1</item>
         <item>ch2</item>
+        <item>kein Chemie</item>
     </string-array>
 
     <string-array name="de">
@@ -92,6 +94,8 @@
 
     <string-array name="inf">
         <item>inf1</item>
+        <item>inf2</item>
+        <item>inf3</item>
         <item>kein Informatik</item>
     </string-array>
 
@@ -130,6 +134,12 @@
         <item>spo1</item>
         <item>spo2</item>
         <item>spo3</item>
+    </string-array>
+
+
+    <string-array name="re">
+        <item>ree1</item>
+        <item>kein Religion</item>
     </string-array>
 
     <array name="verstanden">

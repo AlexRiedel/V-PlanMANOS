@@ -280,13 +280,18 @@ public class MyFragment extends Fragment {
             }
         }catch (NullPointerException enull){
             enull.printStackTrace();
-            throw enull;
+            //throw enull;
         }
 
     }
 
     public void onItemsLoadComplete() {
-        mSwipeRefreshLayout1.setRefreshing(false);  //Ladeanimation stoppen
+        try {
+            mSwipeRefreshLayout1.setRefreshing(false);  //Ladeanimation stoppen
+        }catch (NullPointerException enull){
+            enull.printStackTrace();
+        }
+
     }
 
     public void manRefrech(){

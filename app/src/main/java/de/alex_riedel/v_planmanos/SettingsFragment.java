@@ -21,25 +21,28 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
 
         String klasse = sharedPref.getString("klasse","n/A");
-        String[] a = {"ast","bio","ch","de","en","eth","fr","geo","grw","ge","inf","ku","la","ma","mu","ph","spo"}; //Fuer jede Einstellung (key)
+        String[] a = {"ast","bio","ch","de","en","eth","fr","geo","grw","ge","inf","ku","la","ma","mu","ph","spo", "re"}; //Fuer jede Einstellung (key)
 
 
         Boolean alleKurse = sharedPref.getBoolean("alleKurse",false);
 
 
         if (!(klasse.equals("JG11")||klasse.equals("JG12"))||alleKurse){   //Falls nicht JG11 oder JG12, sollen die Kurswahleinstelllungen ausgeblendet werden
-            for (int i=0;i<17;i++){
+            for (int i=0;i<a.length;i++){
                 findPreference(a[i]).setSummary(sharedPref.getString(a[i],"Bitte auswählen"));
                 findPreference(a[i]).setEnabled(false);
             }
             findPreference("kurswahl").setEnabled(false);       //Genauso wie deren Ueberschrift
 
         }else {
-            for (int i=0;i<17;i++){
+            for (int i=0;i<a.length;i++){
                 findPreference(a[i]).setSummary(sharedPref.getString(a[i],"Bitte auswählen"));  //Sonst bleiben sie eingeblendet, nur die Summery wird gesetz
             }
         }
 
+        if (!(klasse.equals("JG11")||klasse.equals("JG12"))){
+            findPreference("alleKurse").setEnabled(false);
+        }
 
     }
     @Override

@@ -222,6 +222,16 @@
         android:defaultValue="spo1"
         />
 
+        <android.support.v7.preference.ListPreference
+            android:key="re"
+            android:title="Religion"
+            android:dialogTitle="Kurs wählen"
+            android:entries="@array/re"
+            android:entryValues="@array/re"
+            android:summary="TEST"
+            android:defaultValue="kein Religion"
+            />
+
     </android.support.v7.preference.PreferenceCategory>
 
 
