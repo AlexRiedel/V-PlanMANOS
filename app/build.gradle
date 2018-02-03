@@ -7,8 +7,8 @@ android {
         applicationId "de.alex_riedel.v_planmanos"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 4
-        versionName "1.07"
+        versionCode 6
+        versionName "1.08"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

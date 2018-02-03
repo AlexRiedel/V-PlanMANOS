@@ -291,7 +291,7 @@ class Vplan {
             }
 
 
-            if ("".equals(raum[aenZeilen[zaehler]])) {      //Falls kein Raum vorhanden ist:
+            if ("".equals(raum[aenZeilen[zaehler]])||" ".equals(raum[aenZeilen[zaehler]])) {      //Falls kein Raum vorhanden ist:
 
                 ausgabe[zaehler]= stunde[aenZeilen[zaehler]] + ". Stunde" + kurs + ":\n" +
                         "" + fach[aenZeilen[zaehler]] + " " + lehrer[aenZeilen[zaehler]];
@@ -363,10 +363,10 @@ class Vplan {
 
 
         if (isKurs&&(!alleKurse)){
-            String[] a = {"ast","bio","ch","de","en","eth","fr","geo","grw","ge","inf","ku","la","ma","mu","ph","spo"};
-            String[] kurs=new String[17];
+            String[] a = {"ast","bio","ch","de","en","eth","fr","geo","grw","ge","inf","ku","la","ma","mu","ph","spo","re"};
+            String[] kurs=new String[a.length];
 
-            for (int i=0;i<17;i++){
+            for (int i=0;i<a.length;i++){
                 kurs[i]=meiKlasse+"/ "+sharedPref.getString(a[i],"n/A");
             }
 
@@ -375,7 +375,7 @@ class Vplan {
                     abbruch = true;                               //..wird die Schleif beendet
                 } else {
                     try {
-                        for (int i=0;i<17;i++){
+                        for (int i=0;i<a.length;i++){
                             if (klasse[Zeile].contains(kurs[i])){
                                 aenAnzahl++;                            //Aenderungsanzahl um eins erhoehen
                                 aenZeilen[aenAnzahl] = Zeile;           //Zeile mit Aenderung speichern
@@ -644,8 +644,13 @@ class Vplan {
             zeile = zeilefinden(alles, 10,"Info");
             aenlesen2(alles,zeile+3);
 
-            //TODO Zusaetzliche informationen auslesen
 
+
+            zeile = zeilefinden(alles,zeile,"Zusätzliche Informationen:");
+            if (zeile!=-1) {
+                zusInfo = zeileauslesen(alles, zeile + 3, 0);
+                zusInfoBool = true;
+            }
 
 
 

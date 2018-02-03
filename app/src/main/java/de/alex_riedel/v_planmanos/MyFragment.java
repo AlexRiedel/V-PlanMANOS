@@ -355,7 +355,6 @@ public class MyFragment extends Fragment {
 
         }catch (NullPointerException enull){
             enull.printStackTrace();
-            String a="seslkdnjse";
 
             Log.e("MyFragment","vplanZeigen NullPointerException");
             throw enull;

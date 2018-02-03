@@ -68,7 +68,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
         //Wenn die Einstellungen veraendert wurden, die Summery anpassen
-        String[] a = {"ast","bio","ch","de","en","eth","fr","geo","grw","ge","inf","ku","la","ma","mu","ph","spo"};
+        String[] a = {"ast","bio","ch","de","en","eth","fr","geo","grw","ge","inf","ku","la","ma","mu","ph","spo","re"};
         Preference chagedPref = findPreference(key);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         try {
@@ -81,7 +81,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 findPreference("alleKurse").setEnabled(true);                   //... die Listeneinstellungen aktivieren
 
                 if(!sharedPreferences.getBoolean("alleKurse",false)) {
-                    for (int i = 0; i < 17; i++) {
+                    for (int i = 0; i < a.length; i++) {
                         findPreference(a[i]).setEnabled(true);
                     }
                 }
@@ -90,7 +90,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 editor.putBoolean("anderePause",false);                         //Und speichern, dass keine alternativen Pausen genutzt werden
             }else {
                 findPreference("alleKurse").setEnabled(false);
-                for (int i = 0; i < 17; i++) {
+                for (int i = 0; i < a.length; i++) {
                     findPreference(a[i]).setEnabled(false);                 //...sonst die Listeneinstellugen deaktivieren
                 }
                 findPreference("kurswahl").setEnabled(false);
@@ -105,12 +105,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         }
         else if (key.equals("alleKurse")){
             if(sharedPreferences.getBoolean("alleKurse",false)) {
-                for (int i = 0; i < 17; i++) {
+                for (int i = 0; i < a.length; i++) {
                     findPreference(a[i]).setEnabled(false);
                 }
                 findPreference("kurswahl").setEnabled(false);
             }else {
-                for (int i = 0; i < 17; i++) {
+                for (int i = 0; i < a.length; i++) {
                     findPreference(a[i]).setEnabled(true);
                 }
                 findPreference("kurswahl").setEnabled(true);
