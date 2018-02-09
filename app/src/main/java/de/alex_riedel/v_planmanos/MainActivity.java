@@ -16,14 +16,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
@@ -234,11 +232,11 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_info) {       //Service starten
+        /*if (id == R.id.action_info) {       //Service starten
             startService(new Intent(getApplicationContext(), CheckService.class));
             return true;
 
-        }else if(id==R.id.action_settings){ //Einstellungen aufrufen
+        }else */if(id==R.id.action_settings){ //Einstellungen aufrufen
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             return true;
@@ -247,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, getShare());
             sendIntent.setType("text/plain");
-            startActivity(Intent.createChooser(sendIntent,"Test"));
+            startActivity(Intent.createChooser(sendIntent,"Vertretungsplan teilen"));
         }else if (id==R.id.action_kontakt){ //Email
             Intent sendintent = new Intent(Intent.ACTION_SEND);
             sendintent.setType("message/rfc82");
@@ -256,6 +254,8 @@ public class MainActivity extends AppCompatActivity {
             sendintent.putExtra(Intent.EXTRA_TEXT, "ich vinde deinen app fol schiese !!11!");
 
             startActivity(Intent.createChooser(sendintent, "Email senden"));
+        }else if(id==R.id.action_aktuIcon){
+            herunterladen();
         }
 
 

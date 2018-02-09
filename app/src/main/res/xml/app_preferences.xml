@@ -27,6 +27,16 @@
     </android.support.v7.preference.PreferenceCategory>
 -->
 
+    <android.support.v7.preference.SwitchPreferenceCompat
+        android:key="autoService"
+        android:title="Pushnachricht bei neuem V-Plan"
+        android:summaryOff="Es wird nicht automatisch nach neuen Vertretungsplänen gesucht."
+        android:summaryOn="Benachrichtigen, wenn ein neuer Vertretungsplan verfügbar ist."
+        android:switchTextOff="switchTextOff"
+        android:switchTextOn="switchTextOn"
+        android:defaultValue="false"
+        />
+
     <android.support.v7.preference.ListPreference
         android:key="klasse"
         android:title="Klasse"

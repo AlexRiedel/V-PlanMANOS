@@ -379,7 +379,10 @@ public class MyFragment extends Fragment {
     }
 
     private void addCardView(String text, boolean aktiv, boolean letzte){
-        int cardPadding = this.getResources().getDimensionPixelSize(R.dimen.cardPadding);
+        int cardPaddingLeft = this.getResources().getDimensionPixelSize(R.dimen.cardPaddingLeft);
+        int cardPaddingTop = this.getResources().getDimensionPixelSize(R.dimen.cardPaddingTop);
+        int cardPaddingRight = this.getResources().getDimensionPixelSize(R.dimen.cardPaddingRight);
+        int cardPaddingBottom = this.getResources().getDimensionPixelSize(R.dimen.cardPaddingBottom);
         int margLeft = this.getResources().getDimensionPixelSize(R.dimen.margLeft);
         int margTop = this.getResources().getDimensionPixelSize(R.dimen.margTop);
         int margRight = this.getResources().getDimensionPixelSize(R.dimen.margRight);
@@ -401,7 +404,7 @@ public class MyFragment extends Fragment {
 
         cardViews[anzahlCards].setLayoutParams(linLayParmsCard);    //Layoutparameter in Kart einsetzen
 
-        cardViews[anzahlCards].setContentPadding(cardPadding,cardPadding,cardPadding,cardPadding);
+        cardViews[anzahlCards].setContentPadding(cardPaddingLeft,cardPaddingTop,cardPaddingRight,cardPaddingBottom);
 
         if (aktiv){     //Aktive Karten haben eine andere Farbe und Hoehe
             cardViews[anzahlCards].setCardBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.colorAccent));

@@ -4,12 +4,13 @@
 
 
 
+    <item android:id="@+id/action_aktuIcon"
+        android:title="Aktualisieren"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_action_aktu"
+        app:showAsAction="ifRoom"/>
     <item   android:id="@+id/action_share"
         android:title="Teilen"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
-    <item   android:id="@+id/action_info"
-        android:title="Service starten"
         android:orderInCategory="100"
         app:showAsAction="never" />
     <item   android:id="@+id/action_settings"

@@ -46,28 +46,38 @@ public class CheckService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
 
-        if (isOnline()) {
-            vplan1 = new Vplan("vplan1", this);          //Variblen erzeugen
-            vplan2 = new Vplan("vplan2", this);
+        //nachricht("Service gestartet", " ", 1);
 
-            Calendar heute = Calendar.getInstance(); //Heutiges Datum
-            Calendar date1 = vplan1.getCalendar();
-            Calendar date2 = vplan2.getCalendar();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (sharedPref.getBoolean("autoService",false)) {
+
+            if (isOnline()) {
+                vplan1 = new Vplan("vplan1", this);          //Variblen erzeugen
+                vplan2 = new Vplan("vplan2", this);
+
+                Calendar heute = Calendar.getInstance(); //Heutiges Datum
+                Calendar date1 = vplan1.getCalendar();
+                Calendar date2 = vplan2.getCalendar();
 
 
-            if ((!(vergleiche(heute,date1) < 0))&(!(vergleiche(heute,date2) < 0))) {
-                getData task = new getData();               //Aufgabe zum Herunterladen der Daten erzeugen
-                task.execute();
-            } else {
-                if (vergleiche(date1,date2)>0) {
-                    setNextService(1, vplan1);
-                }else {
-                    setNextService(1,vplan2);
+                if ((!(vergleiche(heute, date1) < 0)) & (!(vergleiche(heute, date2) < 0))) {
+                    getData task = new getData();               //Aufgabe zum Herunterladen der Daten erzeugen
+                    task.execute();
+                } else {
+                    if (vergleiche(date1, date2) > 0) {
+                        setNextService(1, vplan1);
+                    } else {
+                        setNextService(1, vplan2);
+                    }
                 }
+
+            } else {
+                setNextService(0, null);
             }
 
-        }else {
-            setNextService(0,null);
+        }else{
+            stopSelf();
         }
 
 
@@ -170,7 +180,7 @@ public class CheckService extends Service {
                 break;
         }
 
-        String s=time.getTime().toString();
+//        String s=time.getTime().toString();
 
 
 
@@ -182,8 +192,8 @@ public class CheckService extends Service {
         stopSelf();                                                                             //Service beenden
     }
 
-    private void Nachricht(String titel, String text, int id){
-    //Erzeugt eine Pushup-Nachricht
+    private void nachricht(String titel, String text, int id){
+    //Erzeugt eine Pushup-nachricht
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -203,8 +213,8 @@ public class CheckService extends Service {
 
     }
 
-    private void NachrichtLang(String titel, Vplan vplan, int id){
-        //Zeigt den Vertretungsplan tw in einer Pushup-Nachricht
+    private void nachrichtLang(String titel, Vplan vplan, int id){
+        //Zeigt den Vertretungsplan tw in einer Pushup-nachricht
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
@@ -244,13 +254,13 @@ public class CheckService extends Service {
         vplan.aenderungfiltern(this.getApplicationContext());
 
         if (!vplan.isKeineAenderung()) {
-            NachrichtLang("Neuer Vertretungsplan:",vplan, 1);
+            nachrichtLang("Neuer Vertretungsplan:",vplan, 1);
         } else {
-            Nachricht("Neuer Vertretungsplan:", "Leider keine Änderung für dich :(", 1);
+            nachricht("Neuer Vertretungsplan:", "Leider keine Änderung für dich :(", 1);
         }
 
         if (vplan.isZusInfoBool()){
-            Nachricht("Zusätzliche Information:",vplan.getZusInfo(),2);
+            nachricht("Zusätzliche Information:",vplan.getZusInfo(),2);
         }
 
         String uhrzeit;
@@ -364,7 +374,7 @@ public class CheckService extends Service {
 
 
             }else {
-                Nachricht("Fehler",vplan3.getFehler(),1);
+                nachricht("Fehler",vplan3.getFehler(),1);
                 setNextService(2,null);
             }
 

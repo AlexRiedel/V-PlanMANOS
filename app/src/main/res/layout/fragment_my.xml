@@ -28,7 +28,9 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/cardOben"
                         android:visibility="visible"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="@dimen/margTopOben"
+                        android:layout_marginLeft="@dimen/margLeft"
+                        android:layout_marginRight="@dimen/margRight"
                         android:layout_marginBottom="5dp"
                         android:layout_gravity="top"
                         android:elevation="10dp">
@@ -164,7 +166,9 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/cardMitte"
                         android:visibility="gone"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="@dimen/margTopOben"
+                        android:layout_marginLeft="@dimen/margLeft"
+                        android:layout_marginRight="@dimen/margRight"
                         android:layout_marginBottom="5dp"
                         android:layout_gravity="top"
                         android:elevation="10dp">
@@ -243,17 +247,17 @@
 
 
         <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/cardUnten"
-        android:visibility="gone"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        card_view:cardElevation="15dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cardUnten"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/margUntentBottom"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="@dimen/margUntentRight"
+            android:layout_marginLeft="@dimen/margUntentLeft"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            card_view:cardElevation="15dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -265,10 +269,10 @@
                 android:layout_height="wrap_content"
                 android:text="Zusätzliche Informationen:"
                 android:id="@+id/textUnten1"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="4dp"
+                android:layout_marginTop="@dimen/margTextUntentTop"
+                android:layout_marginRight="@dimen/margTextUntentRight"
                 android:layout_marginBottom="5dp"
-                android:layout_marginLeft="4dp"
+                android:layout_marginLeft="@dimen/margTextUntentLeft"
                 android:textStyle="bold"/>
 
             <TextView
@@ -277,9 +281,9 @@
                 android:text="Hier sollen zusaetzliche Informationen stehen"
                 android:id="@+id/textUnten2"
                 android:layout_marginTop="0dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="4dp"/>
+                android:layout_marginRight="@dimen/margTextUntentRight"
+                android:layout_marginBottom="@dimen/margTextUntentBottom"
+                android:layout_marginLeft="@dimen/margTextUntentLeft"/>
 
         </LinearLayout>
 

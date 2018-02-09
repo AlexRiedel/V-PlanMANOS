@@ -1,5 +1,6 @@
 package de.alex_riedel.v_planmanos;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -114,6 +115,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                     findPreference(a[i]).setEnabled(true);
                 }
                 findPreference("kurswahl").setEnabled(true);
+            }
+        }else if (key.equals("autoService")){
+            if(sharedPreferences.getBoolean(key,false)) {
+                getActivity().startService(new Intent(getActivity().getApplicationContext(), CheckService.class));
             }
         }
         editor.apply();     //Editor speichern

@@ -7,32 +7,32 @@
     <dimen name="tab_label">14sp</dimen>
     <dimen name="custom_tab_layout_height">72dp</dimen>
 
-    <dimen name="cardPaddingLeft">4dp</dimen>
-    <dimen name="cardPaddingRight">4dp</dimen>
-    <dimen name="cardPaddingTop">4dp</dimen>
-    <dimen name="cardPaddingBottom">4dp</dimen>
+    <dimen name="cardPaddingLeft">15dp</dimen>
+    <dimen name="cardPaddingRight">15dp</dimen>
+    <dimen name="cardPaddingTop">8dp</dimen>
+    <dimen name="cardPaddingBottom">8dp</dimen>
 
-    <dimen name="paddUnten">0</dimen>
+    <dimen name="paddUnten">10</dimen>
 
-    <dimen name="margLeft">10dp</dimen>
-    <dimen name="margRight">10dp</dimen>
+    <dimen name="margLeft">100dp</dimen>
+    <dimen name="margRight">100dp</dimen>
     <dimen name="margTop">5dp</dimen>
     <dimen name="margBottom">0dp</dimen>
 
-    <dimen name="margUntentLeft">5dp</dimen>
-    <dimen name="margUntentRight">5dp</dimen>
-    <dimen name="margUntentTop">0dp</dimen>
-    <dimen name="margUntentBottom">5dp</dimen>
+    <dimen name="margUntentLeft">100dp</dimen>
+    <dimen name="margUntentRight">100dp</dimen>
+    <dimen name="margUntentTop">15dp</dimen>
+    <dimen name="margUntentBottom">30dp</dimen>
 
-    <dimen name="margTextUntentLeft">4dp</dimen>
-    <dimen name="margTextUntentRight">4dp</dimen>
-    <dimen name="margTextUntentTop">4dp</dimen>
-    <dimen name="margTextUntentBottom">10dp</dimen>
+    <dimen name="margTextUntentLeft">15dp</dimen>
+    <dimen name="margTextUntentRight">15dp</dimen>
+    <dimen name="margTextUntentTop">15dp</dimen>
+    <dimen name="margTextUntentBottom">15dp</dimen>
 
     <dimen name="margBottomLast">10dp</dimen>
     <dimen name="margTopFirst">10dp</dimen>
 
-    <dimen name="margTopOben">5dp</dimen>
+    <dimen name="margTopOben">30dp</dimen>
 
     <dimen name="elevCardHigh">10dp</dimen>
     <dimen name="elevCardNorm">2dp</dimen>

@@ -11,6 +11,9 @@ import java.util.Calendar;
  *
  */
 class Vplan {
+
+    private static int MAXANZAHL = 201;
+
     private String datum="n/A";                                         //Datum des Vertretungsplans zB "Montag, 30. März 2015 (B-Woche)"
     private String veroefdat="n/A";                                     //Datum+Uhrzeit der Veroefentlichung zB "01.04.2015 09:54"
     private String abLehrer="n/A";                                      //Abweseende Lehrer zB "Gol, May, San"
@@ -22,12 +25,12 @@ class Vplan {
 
 
 
-    private String[] klasse = new String[100];                          //Spalte "Klasse/Kurs"
-    private String[] stunde = new String[100];                          //Spalte "Stunde"
-    private String[] fach = new String[100];                            //Spalte "Fach"
-    private String[] lehrer = new String[100];                          //Spalte "Lehrer"
-    private String[] raum = new String[100];                            //Spalte "Raum"
-    private String[] info = new String[100];                            //Spalte "Info"
+    private String[] klasse = new String[MAXANZAHL];                    //Spalte "Klasse/Kurs"
+    private String[] stunde = new String[MAXANZAHL];                    //Spalte "Stunde"
+    private String[] fach = new String[MAXANZAHL];                      //Spalte "Fach"
+    private String[] lehrer = new String[MAXANZAHL];                    //Spalte "Lehrer"
+    private String[] raum = new String[MAXANZAHL];                      //Spalte "Raum"
+    private String[] info = new String[MAXANZAHL];                      //Spalte "Info"
 
     private boolean zusInfoBool =false;                                 //true, falls "Zusaetzliche Informatioen" vorhanden sind
     private boolean keineAenderung=true;                                //true, wenn keine Aenderungen fuer "meiKlasse" vorliegen
@@ -37,7 +40,7 @@ class Vplan {
     private int letztesZeichen=0;                                       //Letzte Zeile bie einem Auslesevorgang
     private int aenAnzahl =0;                                           //Anzahl der Aenderungen fuer "MeiKlasse"
 
-    private int[] aenZeilen = new int[100];                             //Zeilen, in denen die Aenderungen fuer "MeiKlasse" stehen
+    private int[] aenZeilen = new int[MAXANZAHL];                             //Zeilen, in denen die Aenderungen fuer "MeiKlasse" stehen
 
 
     Vplan(String dat, Context context){
@@ -648,7 +651,14 @@ class Vplan {
 
             zeile = zeilefinden(alles,zeile,"Zusätzliche Informationen:");
             if (zeile!=-1) {
-                zusInfo = zeileauslesen(alles, zeile + 3, 0);
+                String ausgabe="";
+                do {
+                    zusInfo = zusInfo +"\n"+ ausgabe;
+                    ausgabe = zeileauslesen(alles, zeile + 3, 0);
+                    zeile = zeile + 3;
+                }while (!ausgabe.equals("IndexOutOfBoundsException"));
+
+                zusInfo = zusInfo.substring(2);
                 zusInfoBool = true;
             }
 
@@ -1046,7 +1056,7 @@ class Vplan {
                 Ausgabe=Ausgabe+"\n"+auslesen(alles,zeile,index+4);
             }
         }catch (IndexOutOfBoundsException e){
-            Ausgabe=Ausgabe+"IndexOutOfBoundsExeption";
+            Ausgabe=Ausgabe+"IndexOutOfBoundsException";
             letztesZeichen=999;
         }
 
