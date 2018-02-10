@@ -37,6 +37,14 @@
         android:defaultValue="false"
         />
 
+    <android.support.v7.preference.SwitchPreferenceCompat
+        android:key="Dark"
+        android:title="Dark Theme"
+        android:switchTextOff="switchTextOff"
+        android:switchTextOn="switchTextOn"
+        android:defaultValue="false"
+        />
+
     <android.support.v7.preference.ListPreference
         android:key="klasse"
         android:title="Klasse"

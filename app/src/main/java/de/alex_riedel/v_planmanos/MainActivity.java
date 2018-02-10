@@ -53,6 +53,12 @@ public class MainActivity extends AppCompatActivity {
 //Oeffentliche Methoden:
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (sharedPref.getBoolean("Dark",false)){
+            setTheme(R.style.MyMaterialTheme_Dark);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -75,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Beim ersten Start Dialog anzeigen
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String meiKlasse = sharedPref.getString("klasse", "13a");
 
         if (meiKlasse.equals("13a")) {
@@ -209,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buttonRefresh(View v){
-        //Methode, die der Butten aufruft
+        //Methode, die der Button aufruft
         if (isOnline()) {
             fragment1.manRefrech();
             fragment2.manRefrech();

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.widget.Toast;
 
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -120,6 +121,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             if(sharedPreferences.getBoolean(key,false)) {
                 getActivity().startService(new Intent(getActivity().getApplicationContext(), CheckService.class));
             }
+        }else if (key.equals("Dark")){
+            Toast toast = Toast.makeText(this.getContext(), "Bitte App neu starten", Toast.LENGTH_LONG);
+            toast.show();
         }
         editor.apply();     //Editor speichern
 

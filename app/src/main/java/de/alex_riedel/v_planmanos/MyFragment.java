@@ -4,6 +4,7 @@ package de.alex_riedel.v_planmanos;
 import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -53,6 +54,7 @@ public class MyFragment extends Fragment {
     private CardView cardUnten;
 
     private Button buttonRefresh;
+    private Button buttonRefreshDark;
     private Button buttonMehr;
 
     public CardView[] cardViews = new CardView[50];
@@ -66,6 +68,8 @@ public class MyFragment extends Fragment {
     private Vplan vplan;
 
     private String name ="";
+
+    private boolean darkTheme = false;
 
 //Oeffentliche Methoden:
     public MyFragment() {
@@ -101,6 +105,7 @@ public class MyFragment extends Fragment {
         cardUnten = (CardView) layout.findViewById(R.id.cardUnten);
 
         buttonRefresh = (Button) layout.findViewById(R.id.buttonRefresh);
+        buttonRefreshDark = (Button) layout.findViewById(R.id.buttonRefreshDark);
 
 
         textVeroef1 = (TextView) layout.findViewById(R.id.textVeroef1);
@@ -135,6 +140,24 @@ public class MyFragment extends Fragment {
                 refreshItems();
             }
         });
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+        darkTheme = sharedPref.getBoolean("Dark",false);
+
+
+        if (darkTheme) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                buttonRefresh.setBackgroundTintList(this.getResources().getColorStateList(R.color.button_selector));
+            } else {
+                buttonRefresh.setVisibility(View.GONE);
+                buttonRefreshDark.setVisibility(View.VISIBLE);
+            }
+            cardUnten.setCardBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.colorDarkCardBackground));
+            cardOben.setCardBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.colorDarkCardBackground));
+            cardMitte.setCardBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.colorDarkCardBackground));
+
+        }
+
 
         return layout;
     }
@@ -187,13 +210,22 @@ public class MyFragment extends Fragment {
             textInfo.setText(text);
 
             if (buttonVisible){
-                buttonRefresh.setVisibility(View.VISIBLE);
+                if (darkTheme&&Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
+                    buttonRefreshDark.setVisibility(View.VISIBLE);
+                }else {
+                    buttonRefresh.setVisibility(View.VISIBLE);
+                }
+
                 textAktZeit.setVisibility(View.VISIBLE);
                 cardOben.setVisibility(View.GONE);
                 aktualisieren();
 
             }else {
-                buttonRefresh.setVisibility(View.GONE);
+                if (darkTheme&&Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
+                    buttonRefreshDark.setVisibility(View.GONE);
+                }else {
+                    buttonRefresh.setVisibility(View.GONE);
+                }
                 textAktZeit.setVisibility(View.GONE);
             }
 
@@ -403,12 +435,18 @@ public class MyFragment extends Fragment {
         linLayParmsCard.gravity = Gravity.TOP;
 
         cardViews[anzahlCards].setLayoutParams(linLayParmsCard);    //Layoutparameter in Kart einsetzen
+        if (darkTheme) {
+            cardViews[anzahlCards].setCardBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.colorDarkCardBackground));
+        }
 
         cardViews[anzahlCards].setContentPadding(cardPaddingLeft,cardPaddingTop,cardPaddingRight,cardPaddingBottom);
 
         if (aktiv){     //Aktive Karten haben eine andere Farbe und Hoehe
-            cardViews[anzahlCards].setCardBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.colorAccent));
-
+            if (darkTheme) {
+                cardViews[anzahlCards].setCardBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.colorDarkNext));
+            }else {
+                cardViews[anzahlCards].setCardBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.colorNext));
+            }
 
             cardViews[anzahlCards].setCardElevation(this.getResources().getDimension(R.dimen.elevCardHigh));
         }else {

@@ -4,6 +4,25 @@
 
     </style>
 
+    <style name="MyMaterialTheme.Dark" parent="MyMaterialTheme">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+
+        <item name="colorPrimary">@color/colorDarkPrimary</item>
+        <item name="colorPrimaryDark">@color/colorDarkPrimaryDark</item>
+        <item name="colorAccent">@color/colorDarkAccent</item>
+        <item name="android:textColorPrimary">@color/colorDarkTextPrimary</item>
+        <item name="android:textColorSecondary">@color/colorDarkTextSecondary</item>
+        <item name="android:textColorTertiary">@color/colorDarkTextTertiary</item>
+        <item name="android:windowBackground">@color/colorDarkBackground</item>
+
+        <item name="preferenceTheme">@style/AppPreferenceDark</item>
+        <item name="alertDialogTheme">@style/AppAlertDialogDark</item>
+
+        <item name="android:dividerHeight">4dp</item>
+    </style>
+
+
     <style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
@@ -44,9 +63,20 @@
 
 
     <!-- Style for an Preference Entry -->
-    <style name="AppPreference">
-        <item name="android:layout">@layout/preference_material</item>
+    <style name="AppPreferenceDark" parent="PreferenceThemeOverlay.v14.Material">
+        <item name="android:textColorPrimary">@color/pref_title_selector</item>
+        <item name="android:textColorSecondary">@color/pref_sum_selector</item>
     </style>
+
+
+    <style name="AppAlertDialogDark" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColorPrimary">@color/colorDarkTextPrimary</item>
+        <item name="android:textColorSecondary">@color/colorDarkTextSecondary</item>
+        <item name="colorAccent">@color/colorDarkAccent</item>
+        <item name="android:windowBackground">@color/cardview_dark_background</item>
+        <item name="textColorAlertDialogListItem">@color/colorDarkTextPrimary</item>
+    </style>
+
 
 
 

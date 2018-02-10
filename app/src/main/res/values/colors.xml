@@ -2,5 +2,19 @@
 <resources>
     <color name="colorPrimary">#00BCD4</color>
     <color name="colorPrimaryDark">#00838F</color>
-    <color name="colorAccent">#76FF03</color>
+    <color name="colorAccent">#64DD17</color>
+    <color name="colorNext">#CCFF90</color>
+
+    <color name="colorDarkPrimary">#212121</color>
+    <color name="colorDarkPrimaryDark">#000000</color>
+    <color name="colorDarkAccent">#64DD17</color>
+    <color name="colorDarkBackground">#303030</color>
+    <color name="colorDarkCardBackground">#424242</color>
+    <color name="colorDarkButtonBackground">#757575</color>
+    <color name="colorDarkButtonBackgroundFocus">#BDBDBD</color>
+    <color name="colorDarkButtonBackgroundPress">#666666</color>
+    <color name="colorDarkTextPrimary">#FFFFFF</color>
+    <color name="colorDarkTextSecondary">#EEEEEE</color>
+    <color name="colorDarkTextTertiary">#DDDDDD</color>
+    <color name="colorDarkNext">#33691E</color>
 </resources>
