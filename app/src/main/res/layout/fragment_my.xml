@@ -50,7 +50,7 @@
                                 android:layout_marginBottom="10dp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginRight="15dp"
-                                android:text="Montag, 28.11.2016 (A-Woche)"
+                                android:text="Wird geladen..."
                                 android:textSize="20sp"
                                 android:autoLink="web"/>
 
@@ -233,7 +233,7 @@
                                 android:layout_marginRight="15dp"
                                 android:layout_marginBottom="10dp"
                                 android:textStyle="italic"
-                                android:text="Letzte Aktualisierung: 13:46 Uhr"/>
+                                android:text=""/>
 
 
 

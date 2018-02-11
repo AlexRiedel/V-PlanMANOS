@@ -146,7 +146,7 @@ public class CheckService extends Service {
                 }
 
                 if (next > 10||next==0) {
-                    if (time.get(Calendar.HOUR_OF_DAY)>21){
+                    if (time.get(Calendar.HOUR_OF_DAY)>19){
                         time.set(Calendar.HOUR_OF_DAY, endeStund[4]);
                         time.set(Calendar.MINUTE, endeMinut[4] + 2);
                         time.set(Calendar.SECOND,1);
@@ -187,7 +187,7 @@ public class CheckService extends Service {
         m.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), service);                        //Alarmmanger konfigurieren (=starten)
 
 
-//        Nachricht("Nächster:",s,5); //Zu debuging Zwecken
+//        nachricht("Nächster:",s,5); //Zu debuging Zwecken
 
         stopSelf();                                                                             //Service beenden
     }
@@ -360,8 +360,10 @@ public class CheckService extends Service {
             if (!vplan3.isProblem()){
                 date3 = vplan3.getCalendar();                          //date3 auslesen
 
-                if (vergleiche(heute,date3) < 0) {                    //Wenn Plan3 von (ueber-)morgen:
-                    if (vergleiche(date1,date2) < 0) {                //...diesen als Plan1 bzw. Plan2 (jenachdem, welcher der beiden aelter ist) speichern und anzeigen
+                if (vergleiche(heute,date3) > 0){                       //Wenn Plan3 von (vor-)gestern:
+                    setNextService(2,null);                 //...naechste Ueberpruefung erst morgen
+                }else if (vergleiche(heute,date3) < 0) {                //Wenn Plan3 von (ueber-)morgen:
+                    if (vergleiche(date1,date2) < 0) {                  //...diesen als Plan1 bzw. Plan2 (jenachdem, welcher der beiden aelter ist) speichern und anzeigen
                         vplan1 = new Vplan("vplan1", alles,CheckService.this.getApplicationContext(),true);
                         setVplan(vplan1);
                     } else {
