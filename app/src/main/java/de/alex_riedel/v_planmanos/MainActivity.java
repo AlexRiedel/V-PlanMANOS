@@ -391,7 +391,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             try { //erzeugen der URL
-                url = new URL("http://manos-dresden.de/man_vertretungsplan/VPlan_Schueler.html");     //Neue Adresse
+                url = new URL(Vplan.PLANURL);
                 verbindung = (HttpURLConnection) url.openConnection();                              //Starten der Verbindung
                 verbindung.connect();
                 alles[0]=String.valueOf(verbindung.getResponseCode());                              //Responsecode zur evt. Fehleranalyse speichern

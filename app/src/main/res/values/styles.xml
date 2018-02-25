@@ -19,7 +19,6 @@
         <item name="preferenceTheme">@style/AppPreferenceDark</item>
         <item name="alertDialogTheme">@style/AppAlertDialogDark</item>
 
-        <item name="android:dividerHeight">4dp</item>
     </style>
 
 
@@ -66,6 +65,7 @@
     <style name="AppPreferenceDark" parent="PreferenceThemeOverlay.v14.Material">
         <item name="android:textColorPrimary">@color/pref_title_selector</item>
         <item name="android:textColorSecondary">@color/pref_sum_selector</item>
+        <item name="android:dividerHeight">4dp</item>
     </style>
 
 

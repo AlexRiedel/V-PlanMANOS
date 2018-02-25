@@ -318,8 +318,11 @@ public class CheckService extends Service {
 
 
             try { //erzeugen der URL
-              url = new URL("http://manos-dresden.de/man_vertretungsplan/VPlan_Schueler.html");     //Neue Adresse
+              url = new URL(Vplan.PLANURL);
                 verbindung = (HttpURLConnection) url.openConnection();
+                verbindung.connect();
+                alles[0]=String.valueOf(verbindung.getResponseCode());                              //Responsecode zur evt. Fehleranalyse speichern
+
                 try {
                     InputStream stream = new BufferedInputStream(verbindung.getInputStream());
                     BufferedReader reader = new BufferedReader(new InputStreamReader(stream,"iso-8859-1"));

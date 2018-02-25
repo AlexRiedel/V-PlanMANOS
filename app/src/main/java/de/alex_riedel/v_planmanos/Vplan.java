@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -12,7 +13,6 @@ import java.util.Calendar;
  */
 class Vplan {
 
-    private static int MAXANZAHL = 201;
 
     private String datum="n/A";                                         //Datum des Vertretungsplans zB "Montag, 30. März 2015 (B-Woche)"
     private String veroefdat="n/A";                                     //Datum+Uhrzeit der Veroefentlichung zB "01.04.2015 09:54"
@@ -21,16 +21,16 @@ class Vplan {
     private String aenKlassen="n/A";                                    //Klassen mit Aenderung zB "5a, 5b, 6a, 7a, 7b, 7c, 8c, 9a, JG11, JG12"
     private String zusInfo ="";                                         //"Zusaetzliche Informatioen"
     private String share ="";
-    private String fehler="";
+    private String fehler="allgemeiner Fehler";
 
 
 
-    private String[] klasse = new String[MAXANZAHL];                    //Spalte "Klasse/Kurs"
-    private String[] stunde = new String[MAXANZAHL];                    //Spalte "Stunde"
-    private String[] fach = new String[MAXANZAHL];                      //Spalte "Fach"
-    private String[] lehrer = new String[MAXANZAHL];                    //Spalte "Lehrer"
-    private String[] raum = new String[MAXANZAHL];                      //Spalte "Raum"
-    private String[] info = new String[MAXANZAHL];                      //Spalte "Info"
+    private ArrayList<String> klasse = new ArrayList<>();                    //Spalte "Klasse/Kurs"
+    private ArrayList<String> stunde = new ArrayList<>();                    //Spalte "Stunde"
+    private ArrayList<String> fach = new ArrayList<>();                      //Spalte "Fach"
+    private ArrayList<String> lehrer = new ArrayList<>();                    //Spalte "Lehrer"
+    private ArrayList<String> raum = new ArrayList<>();                      //Spalte "Raum"
+    private ArrayList<String> info = new ArrayList<>();                      //Spalte "Info"
 
     private boolean zusInfoBool =false;                                 //true, falls "Zusaetzliche Informatioen" vorhanden sind
     private boolean keineAenderung=true;                                //true, wenn keine Aenderungen fuer "meiKlasse" vorliegen
@@ -40,8 +40,11 @@ class Vplan {
     private int letztesZeichen=0;                                       //Letzte Zeile bie einem Auslesevorgang
     private int aenAnzahl =0;                                           //Anzahl der Aenderungen fuer "MeiKlasse"
 
-    private int[] aenZeilen = new int[MAXANZAHL];                             //Zeilen, in denen die Aenderungen fuer "MeiKlasse" stehen
+    private ArrayList<Integer> aenZeilen = new ArrayList<>();                             //Zeilen, in denen die Aenderungen fuer "MeiKlasse" stehen
 
+
+    public static String PLANURL = "http://manos-dresden.de/man_vertretungsplan/VPlan_Schueler.html";
+    //public static String PLANURL = "https://alex-riedel.de/16821611/654254621.html";
 
     Vplan(String dat, Context context){
 //        SharedPreferences einstellungen = context.getSharedPreferences("einstellungen", Context.MODE_PRIVATE);   //Speichervariable erzeugen
@@ -106,7 +109,7 @@ class Vplan {
 //    }
 
     int getAenStunde(int zaehler){
-        return Integer.parseInt(stunde[aenZeilen[zaehler]]);
+        return Integer.parseInt(stunde.get(aenZeilen.get(zaehler)));
     }
 
 //    public String[] getFach(){
@@ -286,38 +289,38 @@ class Vplan {
 
         while (zaehler <= aenAnzahl) {
             if (isKurs){
-                if (klasse[aenZeilen[zaehler]].length()>6) {
-                    kurs = " (" + klasse[aenZeilen[zaehler]].substring(6) + ")";
+                if (klasse.get(aenZeilen.get(zaehler)).length()>6) {
+                    kurs = " (" + klasse.get(aenZeilen.get(zaehler)).substring(6) + ")";
                 }else {
-                    kurs =  " (" + klasse[aenZeilen[zaehler]] + ")";
+                    kurs =  " (" + klasse.get(aenZeilen.get(zaehler)) + ")";
                 }
             }
 
 
-            if ("".equals(raum[aenZeilen[zaehler]])||" ".equals(raum[aenZeilen[zaehler]])) {      //Falls kein Raum vorhanden ist:
+            if ("".equals(raum.get(aenZeilen.get(zaehler)))||" ".equals(raum.get(aenZeilen.get(zaehler)))) {      //Falls kein Raum vorhanden ist:
 
-                ausgabe[zaehler]= stunde[aenZeilen[zaehler]] + ". Stunde" + kurs + ":\n" +
-                        "" + fach[aenZeilen[zaehler]] + " " + lehrer[aenZeilen[zaehler]];
+                ausgabe[zaehler]= stunde.get(aenZeilen.get(zaehler)) + ". Stunde" + kurs + ":\n" +
+                        "" + fach.get(aenZeilen.get(zaehler)) + " " + lehrer.get(aenZeilen.get(zaehler));
 
                 share = share +
-                        "" + stunde[aenZeilen[zaehler]] + ". Stunde" + kurs + ":\n" +
-                        "" + fach[aenZeilen[zaehler]] + " " + lehrer[aenZeilen[zaehler]];
+                        "" + stunde.get(aenZeilen.get(zaehler)) + ". Stunde" + kurs + ":\n" +
+                        "" + fach.get(aenZeilen.get(zaehler)) + " " + lehrer.get(aenZeilen.get(zaehler));
 
             } else {                                        //Wenn ein raum vorhadne ist:
 
-                ausgabe[zaehler]= stunde[aenZeilen[zaehler]] + ". Stunde" + kurs + ":\n" +
-                        "" + fach[aenZeilen[zaehler]] + " " + lehrer[aenZeilen[zaehler]] + "; Raum: " + raum[aenZeilen[zaehler]];
+                ausgabe[zaehler]= stunde.get(aenZeilen.get(zaehler)) + ". Stunde" + kurs + ":\n" +
+                        "" + fach.get(aenZeilen.get(zaehler)) + " " + lehrer.get(aenZeilen.get(zaehler)) + "; Raum: " + raum.get(aenZeilen.get(zaehler));
 
                 share = share +
-                        "" + stunde[aenZeilen[zaehler]] + ". Stunde" + kurs + ":\n" +
-                        "" + fach[aenZeilen[zaehler]] + " " + lehrer[aenZeilen[zaehler]] + "; Raum: " + raum[aenZeilen[zaehler]];
+                        "" + stunde.get(aenZeilen.get(zaehler)) + ". Stunde" + kurs + ":\n" +
+                        "" + fach.get(aenZeilen.get(zaehler)) + " " + lehrer.get(aenZeilen.get(zaehler)) + "; Raum: " + raum.get(aenZeilen.get(zaehler));
             }
 
-            if (!"".equals(info[aenZeilen[zaehler]])) {      //Falls eine Info vorhanden ist:
+            if (!"".equals(info.get(aenZeilen.get(zaehler)))) {      //Falls eine Info vorhanden ist:
                 ausgabe[zaehler]=ausgabe[zaehler] + "\n" +
-                        "" + "(" + info[aenZeilen[zaehler]] + ")";
+                        "" + "(" + info.get(aenZeilen.get(zaehler)) + ")";
                 share = share + "\n" +
-                        "" + "(" + info[aenZeilen[zaehler]] + ")" + "\n\n";
+                        "" + "(" + info.get(aenZeilen.get(zaehler)) + ")" + "\n\n";
             }else{
                 ausgabe[zaehler]=ausgabe[zaehler] + "\n";
                 share = share + "\n\n";
@@ -332,17 +335,17 @@ class Vplan {
 
     String getTabelle(){
         int zaehler=2;
-        String ausgabe= stunde[aenZeilen[1]] + ".Std: " + fach[aenZeilen[1]] + " " + lehrer[aenZeilen[1]] + " ("+ info[aenZeilen[1]]+")" ;
+        String ausgabe= stunde.get(aenZeilen.get(1)) + ".Std: " + fach.get(aenZeilen.get(1)) + " " + lehrer.get(aenZeilen.get(1)) + " ("+ info.get(aenZeilen.get(1))+")" ;
 
         while (zaehler<= aenAnzahl){
-            ausgabe=ausgabe+"\n"+ stunde[aenZeilen[zaehler]] + ".Std: " + fach[aenZeilen[zaehler]] + " " + lehrer[aenZeilen[zaehler]]/*+ " ("+info[aenZeilen[zaehler]]+")"*/;
+            ausgabe=ausgabe+"\n"+ stunde.get(aenZeilen.get(zaehler)) + ".Std: " + fach.get(aenZeilen.get(zaehler)) + " " + lehrer.get(aenZeilen.get(zaehler))/*+ " ("+info.get(aenZeilen.get(zaehler))+")"*/;
             zaehler++;
         }
         return ausgabe;
     }
 
     String gibAenderung(int stunde){
-        return this.stunde[aenZeilen[stunde]] + ".Std: " + fach[aenZeilen[stunde]] + " " + lehrer[aenZeilen[stunde]]+ " ("+ info[aenZeilen[stunde]]+")" ;
+        return this.stunde.get(aenZeilen.get(stunde)) + ".Std: " + fach.get(aenZeilen.get(stunde)) + " " + lehrer.get(aenZeilen.get(stunde))+ " ("+ info.get(aenZeilen.get(stunde))+")" ;
     }
 
 
@@ -356,7 +359,7 @@ class Vplan {
 
 
         aenAnzahl = 0;
-        aenZeilen = new int[50];
+        aenZeilen.add(0, 0);
 
         boolean abbruch=false;                                      //zum abbrechen der Schleife
         boolean isKurs = sharedPref.getBoolean("isKurs",false);
@@ -374,20 +377,20 @@ class Vplan {
             }
 
             while (!abbruch) {                                   //Auf Aenderungen von "meiKlasse" ueberpruefen
-                if (Integer.parseInt(klasse[0]) < Zeile) {         //Wenn die Anzahl der Zeilen ueberschritten wird, dann...
+                if (Integer.parseInt(klasse.get(0)) < Zeile) {         //Wenn die Anzahl der Zeilen ueberschritten wird, dann...
                     abbruch = true;                               //..wird die Schleif beendet
                 } else {
                     try {
                         for (int i=0;i<a.length;i++){
-                            if (klasse[Zeile].contains(kurs[i])){
+                            if (klasse.get(Zeile).contains(kurs[i])){
                                 aenAnzahl++;                            //Aenderungsanzahl um eins erhoehen
-                                aenZeilen[aenAnzahl] = Zeile;           //Zeile mit Aenderung speichern
+                                aenZeilen.add(aenAnzahl, Zeile);           //Zeile mit Aenderung speichern
                             }
 
                         }
-                        if (klasse[Zeile].equals(meiKlasse)){
+                        if (klasse.get(Zeile).equals(meiKlasse)){
                             aenAnzahl++;                            //Aenderungsanzahl um eins erhoehen
-                            aenZeilen[aenAnzahl] = Zeile;           //Zeile mit Aenderung speichern
+                            aenZeilen.add(aenAnzahl, Zeile);           //Zeile mit Aenderung speichern
                         }
                     } catch (Exception enull) {
 //                        abbruch = true;
@@ -402,13 +405,13 @@ class Vplan {
 
         }else {
             while (!abbruch) {                                   //Auf Aenderungen von "meiKlasse" ueberpruefen
-                if (Integer.parseInt(klasse[0]) < Zeile) {         //Wenn die Anzahl der Zeilen ueberschritten wird, dann...
+                if (Integer.parseInt(klasse.get(0)) < Zeile) {         //Wenn die Anzahl der Zeilen ueberschritten wird, dann...
                     abbruch = true;                               //..wird die Schleif beendet
                 } else {
                     try {
-                        while (klasse[Zeile].contains(meiKlasse)) { //So lange die klasse in der Zeile "meiKlasse" enthaelt
+                        while (klasse.get(Zeile).contains(meiKlasse)) { //So lange die klasse in der Zeile "meiKlasse" enthaelt
                             aenAnzahl++;                            //Aenderungsanzahl um eins erhoehen
-                            aenZeilen[aenAnzahl] = Zeile;           //Zeile mit Aenderung speichern
+                            aenZeilen.add(aenAnzahl, Zeile);           //Zeile mit Aenderung speichern
                             Zeile++;                                //Zeile um 1 erhoehen
                         }
                     } catch (Exception enull) {
@@ -428,10 +431,10 @@ class Vplan {
             zaehler = 1;                  //zaehler auf 1 setzen
             abbruch = true;               //Schleife wird abgebrochen, falls "abbruch" nicht mehr geaendert wird
             while (zaehler < aenAnzahl) { //Feur alle Zeilen:
-                if (Integer.parseInt(stunde[aenZeilen[zaehler]]) > Integer.parseInt(stunde[aenZeilen[zaehler + 1]])) {  //falls die ehere Zahl groesser als die nachfolgende:
-                    Uebergabe = aenZeilen[zaehler];             //Vertauschen der eheren mit der nachfogenden Zahl;
-                    aenZeilen[zaehler] = aenZeilen[zaehler + 1];
-                    aenZeilen[zaehler + 1] = Uebergabe;
+                if (Integer.parseInt(stunde.get(aenZeilen.get(zaehler))) > Integer.parseInt(stunde.get(aenZeilen.get(zaehler + 1)))) {  //falls die ehere Zahl groesser als die nachfolgende:
+                    Uebergabe = aenZeilen.get(zaehler);             //Vertauschen der eheren mit der nachfogenden Zahl;
+                    aenZeilen.set(zaehler,aenZeilen.get(zaehler + 1));
+                    aenZeilen.set((zaehler + 1),Uebergabe);
                     abbruch = false;                              //Da eine Umsortierung vorgenommen wurde, wird die "erste" Schleife noch Einmal ausgefuert
                 }                                               //d.h. Ende der "ersten" Schleife nur wenn bei einem Durchgang keine Umsortierung vorgneommen wurde
                 zaehler++;                                      //zaehler um 1 erhoehen
@@ -447,57 +450,51 @@ class Vplan {
 
         SharedPreferences heute = context.getSharedPreferences(dat, Context.MODE_PRIVATE);  //Speichervariable erzeugen
         SharedPreferences.Editor editor =heute.edit();              //Editor erzeugen
-        int anzahl= Integer.parseInt(klasse[0])+1;                   //anzahl +1 berechen;--> wie viele Daten gespeichert werden muessen
+        int anzahl= Integer.parseInt(klasse.get(0))+1;                   //anzahl +1 berechen;--> wie viele Daten gespeichert werden muessen
         int zaehler=0;                                              //zaehler 0 setzen
         String name;                                                //Name, unter dem gespeichert wurde
 
         while (anzahl!=zaehler){                                    //klasse[] speichern
             name="klasse"+ String.valueOf(zaehler);                  //Name erzeugen
-            editor.putString(name, klasse[zaehler]);                 //Speichern
+            editor.putString(name, klasse.get(zaehler));                 //Speichern
             zaehler++;                                              //zaehler um 1 erhoehen
         }
         zaehler=0;                                                  //zahler auf 0 setzen
 
         while (anzahl!=zaehler){                                    //stunde[] speichern
             name="stunde"+ String.valueOf(zaehler);                  //Name erzeugen
-            editor.putString(name, stunde[zaehler]);                 //Speichern
+            editor.putString(name, stunde.get(zaehler));                 //Speichern
             zaehler++;                                              //zaehler um 1 erhoehen
         }
         zaehler=0;                                                  //zahler auf 0 setzen
 
         while (anzahl!=zaehler){                                    //fach[] speichern
             name="fach"+ String.valueOf(zaehler);                    //Name erzeugen
-            editor.putString(name, fach[zaehler]);                   //Speichern
+            editor.putString(name, fach.get(zaehler));                   //Speichern
             zaehler++;                                              //zaehler um 1 erhoehen
         }
         zaehler=0;                                                  //zahler auf 0 setzen
 
         while (anzahl!=zaehler){                                    //Lerher[] speichern
             name="lehrer"+ String.valueOf(zaehler);                  //Name erzeugen
-            editor.putString(name, lehrer[zaehler]);                 //Speichern
+            editor.putString(name, lehrer.get(zaehler));                 //Speichern
             zaehler++;                                              //zaehler um 1 erhoehen
         }
         zaehler=0;                                                  //zahler auf 0 setzen
 
         while (anzahl!=zaehler){                                    //raum[] speichern
             name="raum"+ String.valueOf(zaehler);                    //Name erzeugen
-            editor.putString(name, raum[zaehler]);                   //Speichern
+            editor.putString(name, raum.get(zaehler));                   //Speichern
             zaehler++;                                              //zaehler um 1 erhoehen
         }
         zaehler=0;                                                  //zahler auf 0 setzen
 
         while (anzahl!=zaehler){                                    //info[] speichern
             name="info"+ String.valueOf(zaehler);                    //Name erzeugen
-            editor.putString(name, info[zaehler]);                   //Speichern
+            editor.putString(name, info.get(zaehler));                   //Speichern
             zaehler++;                                              //zaehler um 1 erhoehen
         }
-        zaehler=0;                                                  //zahler auf 0 setzen
 
-        while (anzahl!=zaehler){                                    //aenZeilen[] speichern
-            name="aenZeilen"+ String.valueOf(zaehler);               //Name erzeugen
-            editor.putInt(name, aenZeilen[zaehler]);                 //Speichern
-            zaehler++;                                              //zaehler um 1 erhoehen
-        }
 
 
         editor.putString("datum", datum);                            //datum speichern
@@ -524,58 +521,53 @@ class Vplan {
 
         SharedPreferences pref = context.getSharedPreferences(dat, Context.MODE_PRIVATE);  //Speichervariable erzeugen
 
-        klasse[0]=pref.getString("klasse0","0");           //Anzahl der Zeilen auslesen
-        int anzahl= Integer.parseInt(klasse[0])+1;           //anzahl +1 berechen;--> wie viele Daten ausgelesn werden muessen
+        klasse.add(0, pref.getString("klasse0","0"));           //Anzahl der Zeilen auslesen
+        int anzahl= Integer.parseInt(klasse.get(0))+1;           //anzahl +1 berechen;--> wie viele Daten ausgelesn werden muessen
         int zaehler=1;                                      //zaehler auf 1 setzen (klasse[0] wurde bereits ausgelesen)
         String name;                                        //Name, unter dem gespeichert wurde
 
         while (anzahl!=zaehler){                            //Auslesen der klasse
             name="klasse"+ String.valueOf(zaehler);          //Name erzeugen
-            klasse[zaehler]=pref.getString(name,"13b");    //Auslesen
+            klasse.add(zaehler, pref.getString(name,"13b"));    //Auslesen
             zaehler++;                                      //zaehler um 1 erhoehen
         }
         zaehler=0;                                          //zaehler 0 setzen
 
         while (anzahl!=zaehler){                            //Auslesen der stunde
             name="stunde"+ String.valueOf(zaehler);          //Name erzeugen
-            stunde[zaehler]=pref.getString(name,"0");      //Auslesen
+            stunde.add(zaehler, pref.getString(name,"0"));      //Auslesen
             zaehler++;                                      //zaehler um 1 erhoehen
         }
         zaehler=0;                                          //zaehler 0 setzen
 
         while (anzahl!=zaehler){                            //Auslesen des Fachs
             name="fach"+ String.valueOf(zaehler);            //Name erzeugen
-            fach[zaehler]=pref.getString(name,"Bsp");      //Auslesen
+            fach.add(zaehler, pref.getString(name,"Bsp"));      //Auslesen
             zaehler++;                                      //zaehler um 1 erhoehen
         }
         zaehler=0;                                          //zaehler 0 setzen
 
         while (anzahl!=zaehler){                            //Auslesen des Lerhers
             name="lehrer"+ String.valueOf(zaehler);          //Name erzeugen
-            lehrer[zaehler]=pref.getString(name,"Kei");    //Auslesen
+            lehrer.add(zaehler, pref.getString(name,"Kei"));    //Auslesen
             zaehler++;                                      //zaehler um 1 erhoehen
         }
         zaehler=0;                                          //zaehler 0 setzen
 
         while (anzahl!=zaehler){                            //Auslesen des Raums
             name="raum"+ String.valueOf(zaehler);            //Name erzeugen
-            raum[zaehler]=pref.getString(name,"042");      //Auslesen
+            raum.add(zaehler, pref.getString(name,"042"));      //Auslesen
             zaehler++;                                      //zaehler um 1 erhoehen
         }
         zaehler=0;                                          //zaehler 0 setzen
 
         while (anzahl!=zaehler){                            //Auslesen der info
             name="info"+ String.valueOf(zaehler);            //Name erzeugen
-            info[zaehler]=pref.getString(name, "Beispielstunde");//Auslesen
+            info.add(zaehler, pref.getString(name, "Beispielstunde"));//Auslesen
             zaehler++;                                      //zaehler um 1 erhoehen
         }
-        zaehler=0;                                          //zaehler 0 setzen
 
-        while (zaehler<15){
-            name="aenZeilen"+ String.valueOf(zaehler);       //Name erzeugen
-            aenZeilen[zaehler]=pref.getInt(name,0);        //Auslesen
-            zaehler++;                                      //zaehler um 1 erhoehen
-        }
+
 
         datum =pref.getString("datum","n/A");               //datum auslesen
         abLehrer =pref.getString("abLehrer","n/A");         //Abwesende Leher auslesen
@@ -604,12 +596,12 @@ class Vplan {
         //        alles[] wird ausgewertet: Variablen datum, abLehrer, aenLeher, aenKlassen, klasse[], stunde[], fach[], lehrer[], raum[] und info[] werden ausgelesen.
 
         //Setup des Indexes [0] mit Werten, damit diese ungleich null sind
-        klasse[0] = "13b";
-        stunde[0] = "0";
-        fach[0] = "Bei";
-        lehrer[0] = "Kei";
-        raum[0] = "042";
-        info[0] = "Beispielstunde";
+        klasse.add(0, "13b");
+        stunde.add(0, "0");
+        fach.add(0, "Bei");
+        lehrer.add(0, "Kei");
+        raum.add(0, "042");
+        info.add(0, "Beispielstunde");
 
         aenAnzahl =0;
 
@@ -627,41 +619,53 @@ class Vplan {
             if (zeile==-1){
                 zeile = zeileenthaelt(alles, zeile+1,""+jahr);
             }
-            datum = zeileauslesen(alles, zeile,0);
+
+            if (zeile==-1){
+                problem=true;
+            }else {
+                datum = zeileauslesen(alles, zeile,0);
+            }
+
 
             zeile = zeileenthaelt(alles, zeile+1,""+jahr);
             if (zeile==-1){
                 zeile = zeileenthaelt(alles, 4,""+(jahr-1));
             }
-            veroefdat = zeileauslesen(alles, zeile,0);
-
-            zeile = zeilefinden(alles, 10,"Lehrer mit Änderung:");
-            aenLeher = zeileauslesen(alles, zeile+1,0);
-
-            zeile = zeilefinden(alles, 10,"Klassen mit Änderung:");
-            aenKlassen = zeileauslesen(alles, zeile+1,0);
-
-            zeile = zeilefinden(alles, 10,"Abwesende Lehrer:");
-            abLehrer = zeileauslesen(alles, zeile+1,0);
-
-            zeile = zeilefinden(alles, 10,"Info");
-            aenlesen2(alles,zeile+3);
-
-
-
-            zeile = zeilefinden(alles,zeile,"Zusätzliche Informationen:");
-            if (zeile!=-1) {
-                String ausgabe="";
-                do {
-                    zusInfo = zusInfo +"\n"+ ausgabe;
-                    ausgabe = zeileauslesen(alles, zeile + 3, 0);
-                    zeile = zeile + 3;
-                }while (!ausgabe.equals("IndexOutOfBoundsException"));
-
-                zusInfo = zusInfo.substring(2);
-                zusInfoBool = true;
+            if (zeile==-1) {
+                problem=true;
+            }else {
+                veroefdat = zeileauslesen(alles, zeile,0);
             }
 
+            if(!problem) {
+                zeile = zeilefinden(alles, 10, "Lehrer mit Änderung:");
+                aenLeher = zeileauslesen(alles, zeile + 1, 0);
+
+                zeile = zeilefinden(alles, 10, "Klassen mit Änderung:");
+                aenKlassen = zeileauslesen(alles, zeile + 1, 0);
+
+                zeile = zeilefinden(alles, 10, "Abwesende Lehrer:");
+                abLehrer = zeileauslesen(alles, zeile + 1, 0);
+
+                zeile = zeilefinden(alles, 10, "Info");
+                aenlesen2(alles, zeile + 3);
+
+
+                zeile = zeilefinden(alles, zeile, "Zusätzliche Informationen:");
+                if (zeile != -1) {
+                    String ausgabe = "";
+                    do {
+                        zusInfo = zusInfo + "\n" + ausgabe;
+                        ausgabe = zeileauslesen(alles, zeile + 3, 0);
+                        zeile = zeile + 3;
+                    } while (!ausgabe.equals("IndexOutOfBoundsException"));
+
+                    zusInfo = zusInfo.substring(2);
+                    zusInfoBool = true;
+                }
+            }else {
+                fehler="Fehler beim auswerten, bitte manos-dresden.de/vertretungsplan-schueler aufsuchen. Sorry, ich arbeite an einer Lösung;)";
+            }
 
 
 
@@ -676,24 +680,24 @@ class Vplan {
     private void aenlesen2(String[]alles, int zeile){
         int aenNummer=1;
         while (alles[zeile].length()>20){
-            klasse[aenNummer]=zeileauslesen(alles,zeile,0);
-            stunde[aenNummer]=zeileauslesen(alles,zeile+1,0);
-            fach[aenNummer]=zeileauslesen(alles,zeile+2,0);
-            lehrer[aenNummer]=zeileauslesen(alles,zeile+3,0);
-            raum[aenNummer]=zeileauslesen(alles,zeile+4,0);
-            info[aenNummer]=zeileauslesen(alles,zeile+5,0);
+            klasse.add(aenNummer, zeileauslesen(alles,zeile,0));
+            stunde.add(aenNummer, zeileauslesen(alles,zeile+1,0));
+            fach.add(aenNummer, zeileauslesen(alles,zeile+2,0));
+            lehrer.add(aenNummer, zeileauslesen(alles,zeile+3,0));
+            raum.add(aenNummer, zeileauslesen(alles,zeile+4,0));
+            info.add(aenNummer, zeileauslesen(alles,zeile+5,0));
 
-            if(stunde[aenNummer].contains("-")){
-                String stunden[] = stunde[aenNummer].split("-");
+            if(stunde.get(aenNummer).contains("-")){
+                String stunden[] = stunde.get(aenNummer).split("-");
                 int anz = Integer.parseInt(stunden[1])-Integer.parseInt(stunden[0]);
 
                 for (int i=0;i<=anz;i++){
-                    klasse[aenNummer+i]=klasse[aenNummer];
-                    stunde[aenNummer+i]=(Integer.parseInt(stunden[0])+i)+"";
-                    fach[aenNummer+i]=fach[aenNummer];
-                    lehrer[aenNummer+i]=lehrer[aenNummer];
-                    raum[aenNummer+i]=raum[aenNummer];
-                    info[aenNummer+i]=info[aenNummer];
+                    klasse.add((aenNummer+i), klasse.get(aenNummer));
+                    stunde.add((aenNummer+i), (Integer.parseInt(stunden[0])+i)+"");
+                    fach.add((aenNummer+i), fach.get(aenNummer));
+                    lehrer.add((aenNummer+i), lehrer.get(aenNummer));
+                    raum.add((aenNummer+i), raum.get(aenNummer));
+                    info.add((aenNummer+i), info.get(aenNummer));
                 }
                 aenNummer=aenNummer+anz;
             }
@@ -702,19 +706,19 @@ class Vplan {
             aenNummer++;
             zeile=zeile+8;
         }
-        klasse[0]=""+(aenNummer-1);
+        klasse.set(0, (""+(aenNummer-1)));
     }
 
     private void auswerten(String[]alles){
 //        alles[] wird ausgewertet: Variablen datum, abLehrer, aenLeher, aenKlassen, klasse[], stunde[], fach[], lehrer[], raum[] und info[] werden ausgelesen.
 
         //Setup des Indexes [0] mit Werten, damit diese ungleich null sind
-        klasse[0] = "13b";
-        stunde[0] = "0";
-        fach[0] = "Bei";
-        lehrer[0] = "Kei";
-        raum[0] = "042";
-        info[0] = "Beispielstunde";
+        klasse.add(0, "13b");
+        stunde.add(0, "0");
+        fach.add(0, "Bei");
+        lehrer.add(0, "Kei");
+        raum.add(0, "042");
+        info.add(0, "Beispielstunde");
 
         Calendar c = Calendar.getInstance();
         int jahr = c.get(Calendar.YEAR);
@@ -799,7 +803,7 @@ class Vplan {
                         if (-1 != zeilefinden(alles, letzteZeile, "Vertretungsplan für")) { //Falls Seite zwei:
                             Zeile = zeilefinden(alles, letzteZeile, "Vertretungsplan für");
                             Zeile = zeileenthaelt(alles, Zeile + 1, "2016");
-                            aenlesen(alles, Zeile + 9, Integer.valueOf(klasse[0]) + 1);
+                            aenlesen(alles, Zeile + 9, Integer.valueOf(klasse.get(0)) + 1);
                         }
 
                         //TODO dritte Seite ?
@@ -896,22 +900,22 @@ class Vplan {
 
                 //Ausgabe der Richtigen Variable Zuordnen:
                 if (spalte == 0) {                                                      //Falls 0, ->klasse[]
-                    klasse[zeilnummer] = Ausgabe;
+                    klasse.add(zeilnummer, Ausgabe);
                 } else {
                     if (spalte == 1) {                                                  //Falls 1, ->stunde[]
-                        stunde[zeilnummer] = Ausgabe;
+                        stunde.add(zeilnummer, Ausgabe);
                     } else {
                         if (spalte == 2) {                                              //Falls 2, ->fach[]
-                            fach[zeilnummer] = Ausgabe;
+                            fach.add(zeilnummer, Ausgabe);
                         } else {
                             if (spalte == 3) {                                          //Falls 3, ->lehrer[]
-                                lehrer[zeilnummer] = Ausgabe;
+                                lehrer.add(zeilnummer, Ausgabe);
                             } else {
                                 if (spalte == 4) {                                      //Falls 4, ->raum[]
-                                    raum[zeilnummer] = Ausgabe;
+                                    raum.add(zeilnummer, Ausgabe);
                                 } else {
                                     if (spalte == 5) {                                  //Falls 5, ->info[]
-                                        info[zeilnummer] = Ausgabe;
+                                        info.add(zeilnummer, Ausgabe);
                                     }
                                 }
                             }
@@ -924,22 +928,22 @@ class Vplan {
             }
 
 
-            if ("".equals(klasse[zeilnummer])) {                                        //Abbruchbedingung der aeussersten Schleife
-                klasse[0] = String.valueOf(zeilnummer - 1);                             //Anzahl der Zeilen mit Aenderung (feur alle Klassen) speichern
+            if ("".equals(klasse.get(zeilnummer))) {                                        //Abbruchbedingung der aeussersten Schleife
+                klasse.set(0, String.valueOf(zeilnummer - 1));                             //Anzahl der Zeilen mit Aenderung (feur alle Klassen) speichern
                 abbruch = true;                                                         //Schleife abbrechen
             } else {
-                if (klasse[zeilnummer].equals("IndexOutOfBoundsException")) {           //Abbruchbedingung der aeussersten Schleife
-                    klasse[0] = String.valueOf(zeilnummer - 1);                         //Anzahl der Zeilen mit Aenderung (feur alle Klassen) speichern
+                if (klasse.get(zeilnummer).equals("IndexOutOfBoundsException")) {           //Abbruchbedingung der aeussersten Schleife
+                    klasse.set(0, String.valueOf(zeilnummer - 1));                         //Anzahl der Zeilen mit Aenderung (feur alle Klassen) speichern
                     abbruch = true;                                                     //Schleife abbrechen
                     if(zeilnummer<=1){
                         problem =true;
                     }
                 } else {                                                                //Veraenderung einiger Variablen
-                    if ("---".equals(fach[zeilnummer])) {                               //"faelt aus" sieht besser aus als "---"
-                        fach[zeilnummer] = "Ausfall";
+                    if ("---".equals(fach.get(zeilnummer))) {                               //"faelt aus" sieht besser aus als "---"
+                        fach.add(zeilnummer, "Ausfall");
                     }
-                    if ("".equals(info[zeilnummer])) {                                  //Wenn keine info vorhanden ist...
-                        info[zeilnummer] = "geändert";                                  //...wird eine Ersatzinfo kreiert
+                    if ("".equals(info.get(zeilnummer))) {                                  //Wenn keine info vorhanden ist...
+                        info.add(zeilnummer, "geändert");                                  //...wird eine Ersatzinfo kreiert
                     }
                     zeilnummer++;                                                       //zeilenummer um 1 erhoehen
                     letzteZeile = zeile;                                                //Letzte bearbeitet Zeile speichern
