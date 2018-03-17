@@ -126,6 +126,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        //pro forma Service neu starten (falls er abgeschmiert ist)
+
+        if (sharedPref.getBoolean("autoService",false)){
+            startService();
+        }
 
 
     }
@@ -357,6 +362,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }, 100);
+    }
+
+    private void startService(){
+        Handler h = new Handler();
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {         //3 Sekunden warten, damit andere Aktionen vorher abgeschlossen werden koennen
+                startService(new Intent(getApplicationContext(), CheckService.class));
+            }
+        }, 3000);
     }
 
     private void setupViewPager(ViewPager viewPager) {

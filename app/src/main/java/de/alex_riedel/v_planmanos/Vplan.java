@@ -344,8 +344,28 @@ class Vplan {
         return ausgabe;
     }
 
-    String gibAenderung(int stunde){
-        return this.stunde.get(aenZeilen.get(stunde)) + ".Std: " + fach.get(aenZeilen.get(stunde)) + " " + lehrer.get(aenZeilen.get(stunde))+ " ("+ info.get(aenZeilen.get(stunde))+")" ;
+    String gibAenderung(int stunde, Context context){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean isKurs = sharedPref.getBoolean("isKurs",false);
+        boolean alleKurse = sharedPref.getBoolean("alleKurse",false);
+        String kurs = "";
+        String ausgabe = "";
+
+        if (isKurs&&alleKurse){
+            if (klasse.get(aenZeilen.get(stunde)).length()>6) {
+                kurs = " (" + klasse.get(aenZeilen.get(stunde)).substring(6) + ")";
+            }else {
+                kurs =  " (" + klasse.get(aenZeilen.get(stunde)) + ")";
+            }
+        }
+
+        ausgabe = this.stunde.get(aenZeilen.get(stunde)) + ".Std" + kurs + ": " + fach.get(aenZeilen.get(stunde)) + " " + lehrer.get(aenZeilen.get(stunde));
+
+        if (!"".equals(info.get(aenZeilen.get(stunde)))) {
+            ausgabe = ausgabe + " ("+ info.get(aenZeilen.get(stunde))+")";
+        }
+
+        return ausgabe;
     }
 
 
@@ -691,7 +711,8 @@ class Vplan {
                 String stunden[] = stunde.get(aenNummer).split("-");
                 int anz = Integer.parseInt(stunden[1])-Integer.parseInt(stunden[0]);
 
-                for (int i=0;i<=anz;i++){
+                stunde.set(aenNummer,stunden[0]);
+                for (int i=1;i<=anz;i++){
                     klasse.add((aenNummer+i), klasse.get(aenNummer));
                     stunde.add((aenNummer+i), (Integer.parseInt(stunden[0])+i)+"");
                     fach.add((aenNummer+i), fach.get(aenNummer));

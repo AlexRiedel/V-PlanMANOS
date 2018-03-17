@@ -223,7 +223,7 @@ public class CheckService extends Service {
         NotificationCompat.InboxStyle myStyle = new NotificationCompat.InboxStyle();
         myStyle.setSummaryText(vplan.getDatum());
         for (int i=1;i<=vplan.getAenAnzahl();i++){
-            myStyle.addLine(vplan.gibAenderung(i));
+            myStyle.addLine(vplan.gibAenderung(i, CheckService.this.getApplicationContext()));
         }
 
 
