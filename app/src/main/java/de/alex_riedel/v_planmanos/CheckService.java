@@ -256,7 +256,7 @@ public class CheckService extends Service {
         if (!vplan.isKeineAenderung()) {
             nachrichtLang("Neuer Vertretungsplan:",vplan, 1);
         } else {
-            nachricht("Neuer Vertretungsplan:", "Leider keine Änderung für dich :(", 1);
+            nachricht("Neuer Vertretungsplan:", "Leider keine Änderung für dich \uD83D\uDE2D", 1);
         }
 
         if (vplan.isZusInfoBool()){

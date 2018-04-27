@@ -17,6 +17,8 @@ class Vplan {
     private String datum="n/A";                                         //Datum des Vertretungsplans zB "Montag, 30. März 2015 (B-Woche)"
     private String veroefdat="n/A";                                     //Datum+Uhrzeit der Veroefentlichung zB "01.04.2015 09:54"
     private String abLehrer="n/A";                                      //Abweseende Lehrer zB "Gol, May, San"
+    private String abKlassen="";                                        //Abweseende Klassen zB "7a, JG12"; optional (wenn nicht vorhanden ->"")
+    private String nichtRaeume="";                                      //Nicht verfuegbare Raeme zB "217, 220"; optional (wenn nicht vorhanden ->"")
     private String aenLeher="n/A";                                      //Lehrer mit Aenderung zB "Bec, Ber, Gos, Gru, Khn, Mic"
     private String aenKlassen="n/A";                                    //Klassen mit Aenderung zB "5a, 5b, 6a, 7a, 7b, 7c, 8c, 9a, JG11, JG12"
     private String zusInfo ="";                                         //"Zusaetzliche Informatioen"
@@ -82,6 +84,14 @@ class Vplan {
 
     public String getAbLehrer(){
         return abLehrer;
+    }
+
+    public String getAbKlassen(){
+        return abKlassen;
+    }
+
+    public String getNichtRaeume(){
+        return nichtRaeume;
     }
 
     public String getAenLeher(){
@@ -519,6 +529,8 @@ class Vplan {
 
         editor.putString("datum", datum);                            //datum speichern
         editor.putString("abLehrer", abLehrer);                      //Abwesende Leher speichern
+        editor.putString("abKlassen", abKlassen);                    //Abwesende Klassen speichern
+        editor.putString("nichtRaeume", nichtRaeume);                //Nicht verfuegbare Raeume speichern
         editor.putString("aenLeher", aenLeher);                      //lehrer mit Aenderung speichern
         editor.putString("aenKlassen", aenKlassen);                  //Klassen mit Aenderung speichern
         editor.putString("zusInfo", zusInfo);                        //Zusaetzliche Informationen speichern
@@ -591,6 +603,8 @@ class Vplan {
 
         datum =pref.getString("datum","n/A");               //datum auslesen
         abLehrer =pref.getString("abLehrer","n/A");         //Abwesende Leher auslesen
+        abKlassen =pref.getString("abKlassen","");          //Abwesende Klassen auslesen
+        nichtRaeume =pref.getString("nichtRaeume","");      //Nicht verfuegbare Raeume auslesen
         aenLeher =pref.getString("aenLeher","n/A");         //Leherer mit Aenderung auslesen
         aenKlassen =pref.getString("aenKlassen","n/A");     //Klassen mit Aenderung auslesen
         zusInfo =pref.getString("zusInfo","n/A");           //Zusaetzliche Informationen auslesen
@@ -666,6 +680,20 @@ class Vplan {
 
                 zeile = zeilefinden(alles, 10, "Abwesende Lehrer:");
                 abLehrer = zeileauslesen(alles, zeile + 1, 0);
+
+                zeile = zeilefinden(alles, 10, "Abwesende Klassen:");
+                abKlassen = zeileauslesen(alles, zeile + 1, 0);
+
+                if (abKlassen.equals("IndexOutOfBoundsException")){
+                    abKlassen="";
+                }
+
+                zeile = zeilefinden(alles, 10, "Nicht verfügbare Räume:");
+                nichtRaeume = zeileauslesen(alles, zeile + 1, 0);
+
+                if (nichtRaeume.equals("IndexOutOfBoundsException")){
+                    nichtRaeume="";
+                }
 
                 zeile = zeilefinden(alles, 10, "Info");
                 aenlesen2(alles, zeile + 3);

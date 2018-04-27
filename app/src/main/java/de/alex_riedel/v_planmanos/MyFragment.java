@@ -20,6 +20,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -42,6 +45,12 @@ public class MyFragment extends Fragment {
 
     private TextView textAbLehrer1;
     private TextView textAbLehrer2;
+
+    private TextView textAbKlassen1;
+    private TextView textAbKlassen2;
+
+    private TextView textNichtRaeume1;
+    private TextView textNichtRaeume2;
 
     private TextView textAenLehrer1;
     private TextView textAenLehrer2;
@@ -113,6 +122,12 @@ public class MyFragment extends Fragment {
 
         textAbLehrer1 = (TextView) layout.findViewById(R.id.textAbLehrer1);
         textAbLehrer2 = (TextView) layout.findViewById(R.id.textAbLehrer2);
+
+        textAbKlassen1 = (TextView) layout.findViewById(R.id.textAbKlassen1);
+        textAbKlassen2 = (TextView) layout.findViewById(R.id.textAbKlassen2);
+
+        textNichtRaeume1 = (TextView) layout.findViewById(R.id.textNichtRaeume1);
+        textNichtRaeume2 = (TextView) layout.findViewById(R.id.textNichtRaeume2);
 
         textAenLehrer1 = (TextView) layout.findViewById(R.id.textAenLehrer1);
         textAenLehrer2 = (TextView) layout.findViewById(R.id.textAenLehrer2);
@@ -372,8 +387,26 @@ public class MyFragment extends Fragment {
             textDatum.setText(vplan.getDatum());
             textVeroef2.setText(vplan.getVeroefdat());
             textAenLehrer2.setText(vplan.getAenLeher());
+            textAbKlassen2.setText(vplan.getAbKlassen());
+            textNichtRaeume2.setText(vplan.getNichtRaeume());
             textAbLehrer2.setText(vplan.getAbLehrer());
             textAenKlasse2.setText(vplan.getAenKlassen());
+
+            if (textVeroef1.getVisibility() == View.VISIBLE && !vplan.getAbKlassen().equals("")){
+                textAbKlassen1.setVisibility(View.VISIBLE);
+                textAbKlassen2.setVisibility(View.VISIBLE);
+            }else {
+                textAbKlassen1.setVisibility(View.GONE);
+                textAbKlassen2.setVisibility(View.GONE);
+            }
+
+            if (textVeroef1.getVisibility() == View.VISIBLE && !vplan.getNichtRaeume().equals("")){
+                textNichtRaeume1.setVisibility(View.VISIBLE);
+                textNichtRaeume2.setVisibility(View.VISIBLE);
+            }else {
+                textNichtRaeume1.setVisibility(View.GONE);
+                textNichtRaeume2.setVisibility(View.GONE);
+            }
 
 
             if (vplan.isZusInfoBool()){ //Zusaetzliche Informationen anzeigen
@@ -563,17 +596,28 @@ public class MyFragment extends Fragment {
     }
 
     private void makeVisible(){
-        if (textVeroef1.getVisibility() == View.VISIBLE) {
-            View[] view = {textAbLehrer1, textAbLehrer2, textAenKlasse1, textAenKlasse2, textAenLehrer1, textAenLehrer2, textVeroef1, textVeroef2};
+        View[] view = {textAbLehrer1, textAbLehrer2,  textAenKlasse1, textAenKlasse2, textAenLehrer1, textAenLehrer2, textVeroef1, textVeroef2};
+        //textAbKlassen1, textAbKlassen2, textNichtRaeume1, textNichtRaeume2,
+        ArrayList<View> textViewList= new ArrayList<>(Arrays.asList(view));
 
-            for (final View aView : view) {
+        if (!textAbKlassen2.getText().equals("")){
+            textViewList.add(textAbKlassen1);
+            textViewList.add(textAbKlassen2);
+        }
+
+        if (!textNichtRaeume2.getText().equals("")){
+            textViewList.add(textNichtRaeume1);
+            textViewList.add(textNichtRaeume2);
+        }
+
+        if (textVeroef1.getVisibility() == View.VISIBLE) {
+            for (final View aView : textViewList) {
                 aView.setVisibility(View.GONE);
             }
             buttonMehr.setText("mehr");
 
         }else {
-            View[] view = {textAbLehrer1, textAbLehrer2, textAenKlasse1, textAenKlasse2, textAenLehrer1, textAenLehrer2, textVeroef1, textVeroef2};
-            for (final View aView : view) {
+            for (final View aView : textViewList) {
                 aView.setVisibility(View.VISIBLE);
             }
             buttonMehr.setText("weniger");

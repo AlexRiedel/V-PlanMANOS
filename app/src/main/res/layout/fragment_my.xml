@@ -100,6 +100,48 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/textAbKlassen1"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginRight="15dp"
+                                android:textStyle="bold"
+                                android:text="Abwesende Klassen:"
+                                android:visibility="gone"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textAbKlassen2"
+                                android:layout_marginLeft="17dp"
+                                android:layout_marginRight="15dp"
+                                android:layout_marginBottom="5dp"
+                                android:text=""
+                                android:visibility="gone"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textNichtRaeume1"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginRight="15dp"
+                                android:textStyle="bold"
+                                android:text="Nicht verfügbare Räume"
+                                android:visibility="gone"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textNichtRaeume2"
+                                android:layout_marginLeft="17dp"
+                                android:layout_marginRight="15dp"
+                                android:layout_marginBottom="5dp"
+                                android:text=""
+                                android:visibility="gone"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:id="@+id/textAenLehrer1"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginRight="15dp"
